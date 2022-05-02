@@ -1,0 +1,45 @@
+---
+output: 
+  pdf_document:
+    includes:
+      before_body: Portada.tex
+      in_header: 
+    toc: true
+    toc_depth: 3
+  tables: true
+include-before:
+- '`\newpage{}`{=latex}'
+toc-title: Contenido
+urlcolor: blue
+header-includes:
+- \usepackage[nottoc]{tocbibind}
+- \renewcommand{\listfigurename}{Lista de figuras}
+- \renewcommand{\listtablename}{Lista de tablas}
+- \usepackage[utf8]{inputenc}
+- \usepackage[spanish]{babel}
+- \usepackage{graphicx}
+- \usepackage{float}
+- \usepackage{lscape}
+- \usepackage{amsmath}
+- \usepackage{wrapfig}
+---
+
+\newpage
+
+\listoffigures
+
+\listoftables
+
+```{r setup,                     include=FALSE}
+knitr::opts_chunk$set(
+	echo = FALSE,
+	fig.align = "center",
+	fig.height = 3,
+	fig.pos = "H",
+	fig.width = 7,
+	message = FALSE,
+	warning = FALSE
+)
+```
+
+\newpage
