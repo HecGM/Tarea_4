@@ -54,7 +54,7 @@ Resuelva los ejercicios 10.4 y 10.5  (5a edición). Realice estos con ayuda de s
 Un enfoque más simple para los costos de agencia: compromiso limitado. (Lacker \& Weinberg, 1989; Holmström y Tirole, 1998.) Considere el modelo de la Sección 10.2 con una fricción diferente: no hay costo de verificar la producción, pero el empresario puede acultar la fracción $1-f$ de la producción del proyecto al inversionista (con $0 \leq f \leq 1$ ). Por lo tanto, el emprendedor solo puede prometer de manera cresble pagar la fracción $f$ de la producción del proyecto.
 
 ### a)
-Considere un proyecto con el pago esperado $\gamma$ que excede $1+r . \dot{b}$ Cuál es la condición para llevar a cabo el proyecto?
+Considere un proyecto con el pago esperado $\gamma$ que excede $1+r . \dot{b}$ ¿Cuál es la condición para llevar a cabo el proyecto?
 
 Recordemos que asumimos la producción del proyecto se distribuye uniformemente sobre $[0 ; 2]$, con valor esperado $\gamma$, que tanto el empresario como los inversores son neutrales al riesgo, que existe una tecnología sin riesgo o información asimétrica que produce una tasa de retorno de $r$ con seguridad, y que los inversores externos son competitivos, entonces:
 
@@ -93,7 +93,7 @@ Suponga que la condición que encontró en la parte (a) se satisface con una des
 $$
 \gamma f>(1+r)(1-W)
 $$
-BEl contrato entre el inversionista y el empresario está determinado de manera única? Si es asi, bcuál es el contrato? Si no, explica por qué.
+¿El contrato entre el inversionista y el empresario está determinado de manera única? Si es asi, ¿cuál es el contrato? Si no, explica por qué.
 
 Sí, está determinado de manera única; recordemos que en el inciso anterior determinamos que la funcón de rendmientos esperados del inversor alcanza su máximo en $2 \gamma f$, porlo que no tiene la forma de las figuras $10.2$ o $10.3$, si no que sería una curva cóncava y estrictamente creciente en el intervalo [0, $2 \gamma f]$, y el contrato sería $D$ tal que:
 $$
