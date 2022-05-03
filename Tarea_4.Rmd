@@ -45,13 +45,150 @@ knitr::opts_chunk$set(
 \newpage
 
 # Ejercicios teóricos 
-## Ejercicio 1 
+# Ejercicio 1 
 
 Resuelva los ejercicios 10.4 y 10.5  (5a edición). Realice estos con ayuda de su laboratorista y entregue las soluciones escritas a máquina, utilizando LaTeX. [1 hora, 1 punto cada pregunta]
 
+## Romer 10.4
+
+Un enfoque más simple para los costos de agencia: compromiso limitado. (Lacker \& Weinberg, 1989; Holmström y Tirole, 1998.) Considere el modelo de la Sección 10.2 con una fricción diferente: no hay costo de verificar la producción, pero el empresario puede acultar la fracción $1-f$ de la producción del proyecto al inversionista (con $0 \leq f \leq 1$ ). Por lo tanto, el emprendedor solo puede prometer de manera cresble pagar la fracción $f$ de la producción del proyecto.
+
+### a)
+Considere un proyecto con el pago esperado $\gamma$ que excede $1+r . \dot{b}$ Cuál es la condición para llevar a cabo el proyecto?
+
+Recordemos que asumimos la producción del proyecto se distribuye uniformemente sobre $[0 ; 2]$, con valor esperado $\gamma$, que tanto el empresario como los inversores son neutrales al riesgo, que existe una tecnología sin riesgo o información asimétrica que produce una tasa de retorno de $r$ con seguridad, y que los inversores externos son competitivos, entonces:
+
+* El empresario realiza el proyecto si la diferencia entre $\gamma$ y los pagos esperados a los inversores externos es mayor que $(1+r) W$.
+
+$$
+\begin{aligned}
+\gamma-(1+r)(1-W) &>(1+r) W \\
+\gamma-(1+r)+(1+r) W &>(1+r) W \\
+\gamma-(1+r) &>0 \\
+\Rightarrow \gamma &>1+r
+\end{aligned}
+$$
+* El inversor apoya el pryecto si los rendimientos esperados netos máaximos son al menos sus pagos esperados si el proyecto se realiza.
+
+$$
+R^{M A X} \geq(1+r)(1-W)
+$$
+
+La primera condición se cumple por el planteamiento.
+Para la segunda condición recordamos que el punto en que se maximiza la función de rendmientos esperados del inversor es en $2 \gamma-c$ (donde $2 \gamma$ es la producción máxima posible del proyecto, por la distribución supuesta, y $c$ es el costo de verificación); en nuestro caso el punto máximo de esta función es $2 \gamma f$, pues asumimos que $c=0$ y se nos plantea que sólo la fracción $\gamma f$ se puede pagar, por lo que resolvemos (usando la expresión derivada de la ecuación $10.8$ en la página 468):
+
+$$
+\begin{aligned}
+R^{M A X} &=R(2 \gamma f-c)=\left[\frac{2 \gamma f-c}{2 \gamma f}\right]^{2} \gamma f \\
+&=\left[\frac{2 \gamma f}{2 \gamma f}\right]^{2} \gamma f =\gamma f
+\end{aligned}
+$$
+De forma que la segunda condición para que se lleve a cabo el proyecto es:
+$$
+\gamma f \geq(1+r)(1-W)
+$$
+
+### b)
+Suponga que la condición que encontró en la parte (a) se satisface con una desigualdad estricta.
+$$
+\gamma f>(1+r)(1-W)
+$$
+BEl contrato entre el inversionista y el empresario está determinado de manera única? Si es asi, bcuál es el contrato? Si no, explica por qué.
+
+Sí, está determinado de manera única; recordemos que en el inciso anterior determinamos que la funcón de rendmientos esperados del inversor alcanza su máximo en $2 \gamma f$, porlo que no tiene la forma de las figuras $10.2$ o $10.3$, si no que sería una curva cóncava y estrictamente creciente en el intervalo [0, $2 \gamma f]$, y el contrato sería $D$ tal que:
+$$
+R(D)=(1+r)(1-W)
+$$
+con $R(\cdot)$ la función de rendmientos esperados del inversor
+
+### c)
+
+La capacidad de compromiso limitada conduce a la ineficiencia (en relación con el caso en que no hay fricciones) si $\gamma>1+r$ pero el proyecto no se lleva a cabo. Describa si cada uno de los sigusientes puede hacer que un proyecto con $\gamma>1+r$ no se lleve a cabo:
+1) Una caida en la riqueza del emprendedor, W.
+Si $W$ se redujera afectaria lo estipulado en la condicción del inversor en el inciso a:
+$$
+\gamma f \geq(1+r)(1-W)
+$$
+El termino de la derecha sería mayor y se requeriría que $\gamma$, la producción del proyecto, fuese más grande o que la fracción $f$ que se puede pagar sea mayor, lo que provocaria que el proyecto no se lleve a cabo.
+
+II) Un aumento en la fracción del proyecto que el empresario puede ocultar, 1 - $f$ (es decir, una caúda en $f)$.
+
+Similar a la pregunta anterior, si gamma, $r \mathrm{y}$ se mantuvieran iguales, la condición para que el inversor externo apoye el proyecto:
+podría dejar de cumplirse, ya que el lado izquierdo de la desigualdad disminuiría, por lo que la viabilidad del proyecto estaría en duda.
+
+III) Un aumento en el riesgo idiosincrásico. Concretamente, suponga que, la producción del proyecto se distribuye uniformemente en $[\gamma-b, \gamma+b]$ en lugar de uniformemente en $[0,2 \gamma]$, $y$ hay un aumento en $b$.
+Siguiendo el procedimiento que usamos en el inciso b (usando la ecuación $10.8$ para $D \leq \gamma+b$ ):
+$$
+\begin{aligned}
+R(D) &=\frac{(\gamma+b) f-D}{(\gamma+b) f} D+\frac{D}{(\gamma+b) f}\left(\frac{D}{2}\right) \\
+R^{\prime}(D) &=\frac{(\gamma+b) f-D}{(\gamma+b) f}-\frac{D}{(\gamma+b) f}+\frac{D}{2(\gamma+b) f}+\frac{D}{2(\gamma+b) f} \\
+&=\frac{(\gamma+b) f-D}{(\gamma+b) f}
+\end{aligned}
+$$
+De forma que esta función se maximiza en $D=(\gamma+b) f$, por lo que $R^{M A X}=\frac{(\gamma+b) f}{2}, y$ la nueva condición para el inversionista es:
+$$
+\frac{(\gamma+b) f}{2} \geq(1+r)(1-W)
+$$
+Si $b$ aumentara estaríamos en la situación contraria a la del inciso ii, ya que el lado izquierdo de la desigualdad aumentaria y la desigualdad no se rompería, por lo que un aumento de este tipo no debería, en sí mismo, evitar que el proyecto se llevase a cabo.
+
+\newpage
+
+## Romer 10.5
+### a) 
+Demuestre que en el modelo analizado en las ecuaciones $(10.15) - (10.23)$ de la Sección 10.4, las distribuciones incondicionales de $C^a _{2t}$ y $C^n _{2t}$ no son normales.
+
+Analizando la media de las distribuciones se tiene:
+
+$$u(c)=-c\mathrm{e}^{2gc}$$  y  $$E[u(c)]=\int_{- \infty}^{\infty} -c \mathrm{e}^{2 g c} \mathrm{~d} c$$
 
 
-```{r paqueterias}
+Resolviendo ahora:
+$$
+\int_{- \infty}^{\infty}c \mathrm{e}^{2 g c} \mathrm{~d} c
+$$
+Integra por partes: $\int \mathrm{fg}^{\prime}=\mathrm{fg}-\int \mathrm{f}^{\prime} g \rightarrow \quad \mathrm{f}=c, \quad \mathrm{~g}^{\prime}=\mathrm{e}^{2 g c}$
+
+
+Procedimiento:  
+$$
+\mathrm{f}^{\prime}=1, \quad \mathrm{~g}=\frac{\mathrm{e}^{2 g c}}{2 g} \ \ \ \rightarrow \ \ \ =\frac{c \mathrm{e}^{2 g c}}{2 g}-\int_{- \infty}^{\infty} \frac{\mathrm{e}^{2 g c}}{2 g} \mathrm{~d} c
+$$
+Reemplazando las integrales ya resueltas:
+$$
+\frac{c \mathrm{e}^{2 g c}}{2 g}-\int_{- \infty}^{\infty} \frac{\mathrm{e}^{2 g c}}{2 g} \mathrm{~d} c
+=\frac{c \mathrm{e}^{2 g c}}{2 g}-\frac{\mathrm{e}^{2 g c}}{4 g^{2}}
+$$
+Reemplazando, nuevamente, las integrales ya resueltas:
+$$
+-\int_{- \infty}^{\infty} c \mathrm{e}^{2 g c} \mathrm{~d} c = \frac{\mathrm{e}^{2 g c}}{4 g^{2}}-\frac{c \mathrm{e}^{2 g c}}{2 g}
+$$
+El problema está resuelto:
+$$ \int_{- \infty}^{\infty}-c \mathrm{e}^{2 g c} \mathrm{~d} c =\frac{\mathrm{e}^{2 g c}}{4 g^{2}}-\frac{c \mathrm{e}^{2 g c}}{2 g}+C
+$$
+
+Reescribiendo:
+$$
+=-\frac{(2 g c-1) \mathrm{e}^{2 g c}}{4 g^{2}}+C
+$$
+$$-\dfrac{\left(2gc-1\right)\mathrm{e}^{2g \text c}}{4g^2} \neq \mu$$
+Lo cual indica que la esperanza de dicha distribución es variable y no constante, contrario a lo que se presenta en una distribución normal
+
+### b)
+Explique en una oración o dos por qué el análisis del texto, que usa las propiedades de las distribuciones log normales, es correcto.
+
+A comparación del punto anterior, aplicando la lógica de texto se tiene que:
+
+$$
+\log U(c)=2 \gamma c \Rightarrow E[\log (u(c))]=2 \gamma E[c]=2 \gamma \mu
+$$
+
+Además debemos considerar que $\operatorname{Var}(\log (u(c)))=4 \gamma^{2} w$ y nótese que $\log (u(c))=2 \gamma c \sim \log N$ 
+
+$\therefore$ El analisis del texto es correcto.
+
+\newpage
+
+```{r paqueterias, include=FALSE}
 pacman::p_load(tidyverse,
                ggthemes,
                haven, readxl,
