@@ -43,3 +43,99 @@ knitr::opts_chunk$set(
 ```
 
 \newpage
+
+# Ejercicios teóricos 
+## Ejercicio 1 
+
+Resuelva los ejercicios 10.4 y 10.5  (5a edición). Realice estos con ayuda de su laboratorista y entregue las soluciones escritas a máquina, utilizando LaTeX. [1 hora, 1 punto cada pregunta]
+
+
+
+```{r paqueterias}
+pacman::p_load(tidyverse,
+               ggthemes,
+               haven, readxl,
+               kableExtra, ggfortify,
+               cowplot, ggplot2, scales, viridis, latticeExtra,
+               knitr, tinytex, reshape, lubridate, scales, reshape2, seasonal, plm, latex2exp, tibble,Hmisc, zoo,
+               dynlm, magrittr, stargazer,xtable,
+               rsq, MASS,jtools, plm, readr)
+
+
+
+```
+
+# Ejercicios prácticos
+## Ejercicio 2
+
+Estudie el financiamiento del sistema bancario en México a la luz del concepto de "transformación de madurez":
+
+### a)
+Obtenga, del SIE/Financiamiento e información financiera de intermediarios financieros/ del Banco de México, información de las formas de financiamiento del sector bancario (comercial) mexicano, y haga gráficas describiendo la evolución en el tiempo de las distintas tipos de financiamiento (depósitos a la vista, financiamiento de mercado y otros) y de la proporción que cada uno representa del total. Es decir, hay que producir dos gráficas de series de tiempo en la que el valor total está constituido por varias partes intermedias.
+
+
+La información sobre la Banca Comercial en México viene del Sistema de Información Económica de Banxico [^1].
+La información fue filtrada de acuerdo al siguiente criterio [^2]: 
+\begin{enumerate}
+\item{} Para los activos
+\begin{enumerate}
+\item{} A: Disponibilidades
+\item{} B: Bonos de regulación monetaria de negociabilidad limitada
+\item{} C: Financiamiento: Esta cifra se refiere a la suma del crédito y la emisión de valores
+\end{enumerate}
+\item{} Para los pasivos:
+\begin{enumerate}
+\item{} D: Captación 
+\item{} E: Acreedores por reporto de valores
+\item{} F: Financiamiento interno recibido
+\item{} G: Financiamiento externo recibido
+\item{} H: Otros pasivos netos de otros activos más capital
+\end{enumerate}
+\end{enumerate}
+
+[^1]: Esta información se recuperó de la siguiente liga electrónica: https://www.banxico.org.mx/SieInternet/consultarDirectorioInternetAction.do?sector=19&accion=consultarCuadro&idCuadro=CF832&locale=es, consultado en 02/05/2022, 18:00. 
+[^2]: Cabe hacer la siguiente aclaración: La información para los pasivos, al menos para los rubros D, E y F puede desagregarse en los siguientes rubros: i. Sector privado no bancario residente, ii. Banca de desarrollo, iii. Otros intermediarios financieros públicos, iv. Sector público no financiero, v. Sector no residente. A su vez, cada uno de estos rubros puede desagregarse en lo siguiente: i.i. De exigibilidad inmediata, y i.ii. A plazo. Esta distinción es importante ya se será de relevancia para los siguientes incisos de este ejercicio.   
+
+Para este ejercicio tomamos las fuentes financiamiento de la Banca Comercial residente en México para el periodo 2009-2022 con una periodicidad mensual. La información relevante, entonces, son los rubros que siguen: D, E, F y G [^3].
+
+[^3]: Nótese que para este ejercicio dejamos afuera al quinto rubro catalogado como "otros". Esto debido a que es irrelevante en términos conceptuales ya que no nos otorga información que no pueda deducirse de D, E, F y G, y puede verse el rubro H como el residuo. 
+
+La información primero se presenta en términos nominales, tal como lo pide el ejercicio. Es importante resaltar que esta evolución en el tiempo no nos explica realmente cuál ha sido el comportamiento del financiamiento debido a que esta medida incluye la inflación. 
+
+
+### b)
+Obtenga de la misma fuente información del tipo de créditos que el sistema bancario (comercial) mexicano otorga, y haga gráficas describiendo la evolución en el tiempo de distintos tipos de crédito y de la proporción que cada uno representa del total. Al igual que en el inciso anterior, hay que producir dos gráficas de series de tiempo en la que el valor total está constituido por varias partes intermedias.
+
+
+```{r, fig.cap="Créditos del sistema bancario mexicano en indices", fig.pos="H"}
+##Cargamos la base de datos y empezamos el filtrado
+Activos <- read.csv("Activos.csv", header =TRUE)
+Activos <- Activos %>% filter(!row_number() %in% c(1:8)) %>% 
+  dplyr::select(1:3,8,9)%>%
+  setNames(.,c("Fecha", "Total", "A", "B", "C"))
+Activos$B <- na_if(Activos$B, "N/E")   
+Activos$Fecha <- as.yearmon(Activos$Fecha, "%d/%m/%Y")
+df_A <- Activos %>%  mutate(Total = as.numeric(Total)/as.numeric(Total[60])*100, A = as.numeric(A)/as.numeric(A[60])*100, B = as.numeric(B)/as.numeric(B[60])*100, C=as.numeric(C)/as.numeric(C[60])*100)
+
+mdf_A <- melt(df_A, id.vars = "Fecha")
+  
+plot_2b1 <- ggplot(mdf_A, aes(x=Fecha, y=value ,colour=variable,group=variable))+
+  geom_line() + 
+  labs(title = "Créditos del sistema bancario mexicano en indices", x="Año",y='Valor', 
+        colour = " ") + theme_bw() +  theme(text=element_text(size=12,  family="serif"))
+plot(plot_2b1)
+```
+
+```{r}
+##Calculamos las tasas de crecimiento
+df_pA <- Activos %>% mutate(PA= as.numeric(A)/as.numeric(Total)*100, PB = as.numeric(B)/as.numeric(Total)*100, PC = as.numeric(C)/as.numeric(Total)*100) %>% 
+  dplyr::select(1,6:8)
+mdf_pA <- melt(df_pA, id.vars = "Fecha")
+  
+plot_2b2 <- ggplot(mdf_pA, aes(x=Fecha, y=value ,colour=variable,group=variable))+
+  geom_line() + 
+  labs(title = "Créditos del sistema bancario mexicano en indices", x="Año",y='Valor', 
+        colour = " ") + theme_bw() +  theme(text=element_text(size=12,  family="serif"))
+plot(plot_2b2)
+```
+
