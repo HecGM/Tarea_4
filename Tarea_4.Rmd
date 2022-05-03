@@ -276,3 +276,27 @@ plot_2b2 <- ggplot(mdf_pA, aes(x=Fecha, y=value ,colour=variable,group=variable)
 plot(plot_2b2)
 ```
 
+
+
+#  Ejercicio 3
+
+
+\textbf{Estudie al gobierno mexicano y a los corporativos mexicanos desde el punto de vista de su endeudamiento}
+
+
+\begin{center}
+Empecemos
+\end{center}
+## 3 (a)
+\textit{Utilice datos del SIE/Valores en Circulación y de SIE/Finanzas públicas del Banco de México para describir la evolución a lo largo del tiempo de la composición de la deuda del gobierno mexicano por tipo de instrumento, madurez y moneda. Señale la implicación de lo que encuentre para el riesgo de impago.}
+
+\textbf{Solucion 3 (a)}
+
+
+Se obtuvieron series para Julio 2009 a Febrero 2020 del SIE Banxico de la base Valores en Circulación:
+Clasificación de emisiones de títulos de deuda emitidos en el mercado local (CF460). También se
+consultó la base Finanzas Públicas: Deuda Neta Total del Sector Público, saldo promedio y final
+(CG7) Todas las series en niveles de Miles de Millones de Pesos
+
+
+
