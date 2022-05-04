@@ -67,31 +67,33 @@ En la siguiente gráfica se muestra la proporción del crédito hipotecario en e
 
 ```{r d2, echo=FALSE,fig.width=12,fig.height=9}
 ## Generamos las time series de las variables
-## Ya tomé la serie de hipoteca deflactada por el INPC
 y<-credito.hipotecario[,2]
 c<-credito.hipotecario[,3]
 c_inpc<-credito.hipotecario[,8]
-c_ipp<-credito.hipotecario[,13]
+c_ipp<-credito.hipotecario[-c(1:7),13]
+## Generamos las time series de 1997 a 2020
 ty<-ts(y,start=1997,end=2020,frequency=1)
 tc<-ts(c,start=1997,end=2020,frequency=1)
 tsc_inpc<-ts(c_inpc,start=1997,end=2020,frequency=1)
-tsc_ipp<-ts(c_ipp,start=1997,end=2020,frequency=1)
+tsc_ipp<-ts(c_ipp,start=2003,end=2020,frequency=1)
 ## Generamos la variable como proporción del PIB
 # Para la hipoteca en términos nominales
 p_c<-(c/y)*100
 tp_c<-ts(p_c,start=1997,end=2020,frequency=1)
 # Para la hipoteca en términos reales con INPC
 p_c_inpc<-(c_inpc/y)*100
+p_c_inpc2<-credito.hipotecario[,9]
+tsc2<-ts(p_c_inpc2,start=1997,end=2020,frequency=1)
 tp_c_inpc<-ts(p_c,start=1997,end=2020,frequency=1)
 # Para la hipoteca en términos reales con IPP
-p_c_ipp<-credito.hipotecario[,14]
-tp_c_ipp<-ts(p_c_ipp,start=1997,end=2020,frequency=1)
+p_c_ipp<-credito.hipotecario[-c(1:7),14]
+tp_c_ipp<-ts(p_c_ipp,start=2003,end=2020,frequency=1)
 ## Graficamos las 3 series
 par(mfrow=c(4,1))
 ts.plot(ty,main="PIB real",ylab="Y",xlab="t")
 ts.plot(tp_c,main="Proporción de crédito hipotecario nominal",ylab="Crédito",xlab="t")
-ts.plot(tp_c_ipp, main="Proporción de crédito deflactado con INPC",ylab="p_c",xlab="t")
-ts.plot(tp_c_inpc, main="Proporción de crédito deflactado con IPP",ylab="p_c",xlab="t")
+ts.plot(tsc2, main="Proporción de crédito deflactado con INPC",ylab="p_c",xlab="t")
+ts.plot(tp_c_ipp, main="Proporción de crédito deflactado con IPP",ylab="p_c",xlab="t")
 
 ```
 
