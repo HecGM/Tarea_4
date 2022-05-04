@@ -45,11 +45,12 @@ knitr::opts_chunk$set(
 \newpage
 
 # Ejercicios teóricos 
-# Ejercicio 1 
+
+## Ejercicio 1 
 
 Resuelva los ejercicios 10.4 y 10.5  (5a edición). Realice estos con ayuda de su laboratorista y entregue las soluciones escritas a máquina, utilizando LaTeX. [1 hora, 1 punto cada pregunta]
 
-## Romer 10.4
+### Romer 10.4
 
 Un enfoque más simple para los costos de agencia: compromiso limitado. (Lacker \& Weinberg, 1989; Holmström y Tirole, 1998.) Considere el modelo de la Sección 10.2 con una fricción diferente: no hay costo de verificar la producción, pero el empresario puede acultar la fracción $1-f$ de la producción del proyecto al inversionista (con $0 \leq f \leq 1$ ). Por lo tanto, el emprendedor solo puede prometer de manera cresble pagar la fracción $f$ de la producción del proyecto.
 
@@ -95,7 +96,7 @@ $$
 $$
 ¿El contrato entre el inversionista y el empresario está determinado de manera única? Si es asi, ¿cuál es el contrato? Si no, explica por qué.
 
-Sí, está determinado de manera única; recordemos que en el inciso anterior determinamos que la funcón de rendmientos esperados del inversor alcanza su máximo en $2 \gamma f$, porlo que no tiene la forma de las figuras $10.2$ o $10.3$, si no que sería una curva cóncava y estrictamente creciente en el intervalo [0, $2 \gamma f]$, y el contrato sería $D$ tal que:
+Sí, está determinado de manera única; recordemos que en el inciso anterior determinamos que la funcón de rendmientos esperados del inversor alcanza su máximo en $2 \gamma f$, porlo que no tiene la forma de las figuras $10.2$ o $10.3$, si no que sería una curva cóncava y estrictamente creciente en el intervalo [0, $2 \gamma f$], y el contrato sería $D$ tal que:
 $$
 R(D)=(1+r)(1-W)
 $$
@@ -133,7 +134,7 @@ Si $b$ aumentara estaríamos en la situación contraria a la del inciso ii, ya q
 
 \newpage
 
-## Romer 10.5
+### Romer 10.5
 ### a) 
 Demuestre que en el modelo analizado en las ecuaciones $(10.15) - (10.23)$ de la Sección 10.4, las distribuciones incondicionales de $C^a _{2t}$ y $C^n _{2t}$ no son normales.
 
@@ -239,6 +240,26 @@ Para este ejercicio tomamos las fuentes financiamiento de la Banca Comercial res
 
 La información primero se presenta en términos nominales, tal como lo pide el ejercicio. Es importante resaltar que esta evolución en el tiempo no nos explica realmente cuál ha sido el comportamiento del financiamiento debido a que esta medida incluye la inflación. 
 
+```{r, fig.cap="Valor de los Pasivos en niveles", fig.pos="H"}
+base2 <- read.csv("Activos_Pasivos.csv")
+Pasivos <- base2 %>% filter(!row_number() %in% c(1:8)) %>% 
+  dplyr::select(1,19,20,36,43,47, 48) %>% 
+  setNames(.,c("Fecha", "Total", "D","E", "f", "G", "H")) %>% #se utuliza f miniscula porque R no permite usar F por el operador False
+  mutate(Total=as.numeric(Total),D=as.numeric(D),E=as.numeric(E),f=as.numeric(f),G=as.numeric(G), H=as.numeric(H)) %>%
+  mutate(pD=D/Total*100,pE=E/Total*100,pF=f/Total*100,pG=G/Total*100,pH=H/Total*100)
+Pasivos$Fecha <- as.yearmon(Pasivos$Fecha, "%d/%m/%Y")
+
+Pasivos %>% dplyr::select(Fecha, D, E, f, G, H) %>% gather(variable, value, D:H) %>% ggplot(aes(x= Fecha, y = value, fill= variable))+ geom_area()+theme_bw() +labs(title = "Valor de los Pasivos en niveles", x="Año",y='Valor', 
+        colour = " ")
+```
+Podemos ver la misma información representada como proporción del total, lo cual nos da una mejor perspectiva del tipo de pasivo que es más importante para el financiamiento de la banca privada.
+
+
+```{r, fig.cap="Proporción del total de los Pasivos", fig.pos="H"}
+Pasivos %>% dplyr::select(Fecha, pD, pE, pF, pG, pH) %>% gather(variable, value, pD:pH) %>% ggplot(aes(x= Fecha, y = value, fill= variable))+ geom_area()+theme_bw() +labs(title = "Proporción del total de los Pasivos", x="Año",y='Valor', colour = " ")
+
+```
+
 
 ### b)
 Obtenga de la misma fuente información del tipo de créditos que el sistema bancario (comercial) mexicano otorga, y haga gráficas describiendo la evolución en el tiempo de distintos tipos de crédito y de la proporción que cada uno representa del total. Al igual que en el inciso anterior, hay que producir dos gráficas de series de tiempo en la que el valor total está constituido por varias partes intermedias.
@@ -263,7 +284,7 @@ plot_2b1 <- ggplot(mdf_A, aes(x=Fecha, y=value ,colour=variable,group=variable))
 plot(plot_2b1)
 ```
 
-```{r}
+```{r, fig.cap="Proporción del total de los activos", fig.pos="H"}
 ##Calculamos las tasas de crecimiento
 df_pA <- Activos %>% mutate(PA= as.numeric(A)/as.numeric(Total)*100, PB = as.numeric(B)/as.numeric(Total)*100, PC = as.numeric(C)/as.numeric(Total)*100) %>% 
   dplyr::select(1,6:8)
@@ -271,7 +292,7 @@ mdf_pA <- melt(df_pA, id.vars = "Fecha")
   
 plot_2b2 <- ggplot(mdf_pA, aes(x=Fecha, y=value ,colour=variable,group=variable))+
   geom_line() + 
-  labs(title = "Créditos del sistema bancario mexicano en indices", x="Año",y='Valor', 
+  labs(title = "Proporción del total de los activos", x="Año",y='Valor', 
         colour = " ") + theme_bw() +  theme(text=element_text(size=12,  family="serif"))
 plot(plot_2b2)
 ```
