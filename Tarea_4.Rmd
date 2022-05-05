@@ -295,12 +295,14 @@ plot_2b2 <- ggplot(mdf_pA, aes(x=Fecha, y=value ,colour=variable,group=variable)
   labs(title = "Proporción del total de los activos", x="Año",y='Valor', 
         colour = " ") + theme_bw() +  theme(text=element_text(size=12,  family="serif"))
 plot(plot_2b2)
+# limpia la pantalla de tablas o basura de un ejercicio anterior
+rm(list = ls())
 ```
 ## d)
 ## A propósito, documente el incremento dramático a lo largo del tiempo en el crédito hipotecario como proporción del PIB. 
 ```{r d 1,include=FALSE}
 ## Cargamos la base de datos: 
-credito.hipotecario <- read.csv("~/GitHub/Tarea_4/inciso d/credito hipotecario.csv")
+credito.hipotecario <- read.csv("credito hipotecario.csv")
 ```
 
 Una de las consecuencias de la penetración financiera y del crecimiento demográfico es el crecimiento del crédito en general, tanto el crédito al consumo como el crédito hipotecario o a la vivienda. En general, la tendencia que se esperaría es creciente en términos reales para el crédito, y también, como porcentaje del PIB. 
@@ -396,7 +398,7 @@ Es posible hacer un análisis un poco más desagregado para conocer la naturalez
 Notemos que es importante esta distinción por dos cosas a saber: i. El indicador de crédito es un indicador clave para entender y buscar explicar el comportamiento volátil de los mercados financieros y, por ende, de las *potenciales* crisis financieras, y ii. Porque las burbujas financieras se han generado o pueden generarse, fácilmente, en los mercados inmobiliarios y de hipotecas. Por ello es relevante esta desagregación para el análisis. 
 ```{r d3, echo=FALSE,fig.width=12,fig.height=9}
 ## Cargamos la base de datos
-bancario <- read.csv("C:/Users/elam_/OneDrive - El Colegio de México A.C/Maestría en Economía - 2021-2023/Maestría en Economía - Colmex/Segundo Semestre Maestría/Macroeconomía/Tareas/Tarea 4/bancario y no bancario.csv")
+bancario <- read.csv("bancario y no bancario.csv")
 ## Tomamos las nuevas dos variables
 pc_bancario<-bancario[,1]
 pc_no_bancario<-bancario[,2]
@@ -417,6 +419,27 @@ Lo interesante de este análisis es decir, por tanto, lo siguiente: el crédito 
 #  Ejercicio 3
 
 
+
+
+```{r}
+pacman::p_load(tidyverse,dplyr,foreign,psych,
+               ggthemes,
+               haven, readxl,
+               kableExtra,
+               cowplot, ggplot2, scales, viridis, latticeExtra,
+               knitr, tinytex, reshape, lubridate, scales, reshape2, MASS, dplyr,
+               jtools,
+              clusterGeneration,
+               stargazer,
+               xtable,
+               rsq,
+               wooldridge,MASS)
+
+
+options(knitr.kable.NA = "-")
+```
+
+
 \textbf{Estudie al gobierno mexicano y a los corporativos mexicanos desde el punto de vista de su endeudamiento}
 
 
@@ -435,4 +458,413 @@ consultó la base Finanzas Públicas: Deuda Neta Total del Sector Público, sald
 (CG7) Todas las series en niveles de Miles de Millones de Pesos
 
 
+## 3 (b)
+\textit {Utilice datos del SIE/Valores en Circulación o para describir la composición a lo largo del tiempo de la deuda del del sector privado no financiero mexicano por madurez y moneda. Señale la implicación de lo que encuentre para el riesgo de impago.}
 
+\textbf{Solucion 3 (b)}
+
+Se obtuvieron series para Julio 2009 - Marzo 2022 del SIE Banxico de la base Clasificación de emisiones de títulos de deuda emitidos en el mercado local. En particular se seleccionaron las siguientes series:
+\begin{enumerate}
+
+\item[] SF110374: Títulos de deuda emitidos por  Instituciones no financieras, Total (INFT)
+\item[] SF110355:  Instituciones No Financieras Total Privadas  (INFP)
+\item[] SF110356: Títulos de deuda emitidos por Instituciones no financieras, Privadas,Corto plazo.(Deuda emitida por corporativos no financieros del sector privado).
+\item[]SF110357  Títulos de deuda emitidos por  Instituciones no financieras, Privadas, Largo plazo,
+\item[]SF223292:Títulos de deuda emitidos por  Instituciones no financieras, Privadas En moneda local.
+\item[]SF223293 : Títulos de deuda emitidos  por Instituciones no financieras, Privadas en moneda extranjera.
+\end{enumerate}
+
+Las series anteriores se descomponen en:
+Plazo original: Corto y Largo plazo (Deuda cuyo plazo al momento de la colocación inicial era menor o mayor a 365 días respectivamente)
+
+Con lo anterior se propone estudiar la evolución de la deuda del sector privado no financiero y analizar el riesgo de impago.
+En primer lugar observamos la evolución histórica de la deuda total emitida por Instituciones No Financieras SF110356 y SF110357.
+
+La Figura \ref{graf1} muestra las series de la deuda de instituciones no financieras, Privadas en millones de pesos, comparando el largo y corto plazo.
+
+
+
+```{r No Financieras Privadas}
+# limpia la pantalla de tablas o basura de un ejercicio anterior
+rm(list = ls())
+#Leeer el archivo de los datos de Valores en circulación y guardarlo en B1
+  B1 <- read_xlsx("Valores en circulacion.xlsx")
+  Nombres<- B1 [11,]
+  colnames(B1) <- Nombres
+  B1 <- B1[-c(1:28),]
+  B1$Fecha= as.Date(as.numeric(B1$Fecha)-2, origin="1900-01-01")
+ # firltrar la basse de datos B1, de acuerdo a las seriers requeridas. SF110356,SF110357,SF223292,SF223293
+  B1<- B1%>%
+dplyr::select(Fecha,SF110356,SF110357,SF223292,SF223293, SF110374,SF110355 )
+  # Componer el vector para graficar corto y largo plazo en Dato
+  fecha<-c(B1$Fecha,B1$Fecha)
+  Dato <- c(B1$SF110356,B1$SF110357)
+  Plazo <- c(rep("Corto",length(B1$Fecha)), rep("Largo",length(B1$Fecha)))
+  #Asignar a B2 los datos para graficar Deuda del ector privado no financiero mexicano Corto y largo plazo
+  B2 <- data.frame(fecha, Plazo, Dato)
+  B2<- B2 %>% mutate(Año=as.character(format(B2$fecha,'%Y')))
+B2$Dato<- as.numeric(B2$Dato)
+rm(fecha,Nombres,Dato,Plazo) # limpia la pantalla de tablas o basura de un ejercicio anterior
+```
+
+```{r grafica 1, fig.cap=' Deuda Interna del del sector privado no financiero mexicano \\label{graf1}', fig.pos = 'H',fig.height=3.0}
+ggplot(B2,aes(x=fecha, y= Dato,color =Plazo ))  +
+  geom_line() + 
+  labs(title = "Deuda del sector privado no financiero Corto y largo plazo") +  
+    theme_bw() +
+  theme(text=element_text(size=12,  family="serif"),
+        plot.title = element_text(size=rel(1.1),
+         # Tamaño del título, doble del establecido por defecto
+                            vjust=2, #Justificación vertical, para separarlo del gráfico
+                                    face="bold", #Letra negrilla
+                                    color="darkgreen", #Color del texto
+                                lineheight=1.1))+ #Separación entre líneas)) + 
+  scale_x_date(
+    name = "Años",
+    date_breaks ="year",# "1 Year",
+    position = "bottom",
+    labels=date_format("%Y"),
+    sec.axis = waiver())+
+  
+scale_y_continuous(
+  name = " Saldos a valor nominal (millones de pesos)",
+  position = "left",
+  n.breaks = 10,
+  sec.axis = waiver())+
+   #geom_hline(yintercept = prom1[2,1]/1000,colour = "red" ,caption="Prom")+
+# geom_point( col = "chartreuse4")+
+geom_hline(yintercept = 0,colour = "Blue" )
+
+```
+
+
+Podemos observar que la deuda de las INFP se compone al 92 % de deuda a Largo plazo que ha ido creciendo, mientras que la deuda a Corto plazo se ha mantenido constante en todo el periodo de estudio.
+
+La Figura \ref{graf2} muestra las tasas de crecimiento  de la deuda del sector privado no financiero mexicano, en porcentaje  comparando el largo y corto plazo.
+
+
+```{r No Financieras  crecimiento }
+  B1$SF110356<- as.numeric(B1$SF110356) #Poner los datos en formato de numero 
+   B1$SF110357<- as.numeric(B1$SF110357) #Poner los datos en formato de numero 
+  # Componer el vector para tasas de crecimiento en corto y largo plazo.
+B1<- B1 %>% mutate ( Cre_1=(SF110356/lag(SF110356)-1)*100,
+                     Cre_2=(SF110357/lag(SF110357)-1)*100)
+
+  fecha<-c(B1$Fecha,B1$Fecha)
+  Dato <- c(B1$Cre_1,B1$Cre_2)
+  Plazo <- c(rep("Corto",length(B1$Fecha)), rep("Largo",length(B1$Fecha)))
+  #Asignar a B2 los datos para graficar Deuda del ector privado no financiero mexicano Corto y largo plazo
+  B2 <- data.frame(fecha, Plazo, Dato)
+rm(fecha,Dato,Plazo) # limpia la pantalla de tablas o basura de un ejercicio anterior
+```
+
+```{r grafica 2 P, fig.cap='Crecimiento Deuda Interna del del sector privado no financiero \\label{graf2}', fig.pos = 'H',fig.height=3.0}
+ggplot(B2,aes(x=fecha, y= Dato,color =Plazo ))  +
+  geom_line() + 
+  labs(title = "Crecimiento Deuda Interna del del sector privado no financiero") +  
+    theme_bw() +
+  theme(text=element_text(size=12,  family="serif"),
+        plot.title = element_text(size=rel(1.1),
+         # Tamaño del título, doble del establecido por defecto
+                            vjust=2, #Justificación vertical, para separarlo del gráfico
+                                    face="bold", #Letra negrilla
+                                    color="darkgreen", #Color del texto
+                                lineheight=1.1))+ #Separación entre líneas)) + 
+  scale_x_date(
+    name = "Años",
+    date_breaks ="year",# "1 Year",
+    position = "bottom",
+    labels=date_format("%Y"),
+    sec.axis = waiver())+
+  
+scale_y_continuous(
+  name = " Tasa de Crecimiento (%) ",
+  position = "left",
+  n.breaks = 10,
+  sec.axis = waiver())+
+   #geom_hline(yintercept = prom1[2,1]/1000,colour = "red" ,caption="Prom")+
+# geom_point( col = "chartreuse4")+
+geom_hline(yintercept = 0,colour = "Blue" )
+
+```
+
+
+Se observa que Títulos de deuda emitidos por instituciones no financieras, Privadas en el Corto plazo es mas volatil que en el largo plazo.
+
+La Figura \ref{graf3} muestra las series de la deuda de instituciones no financieras, Privadas en millones de pesos, comparando en Moneda local y extranjera.
+
+```{r No Financieras  Moneda}
+  B1$SF223292<- as.numeric(B1$SF223292) #Poner los datos en formato de numero 
+   B1$SF223293 <- as.numeric(B1$SF223293) #Poner los datos en formato de numero 
+  # Componer el vector para graficar En moneda local y  En moneda extranjera 
+B1<- B1 %>% mutate ( Cre_1=(SF223292/lag(SF223292)-1)*100,
+                     Cre_2=(SF223293/lag(SF223293)-1)*100)
+
+  fecha<-c(B1$Fecha,B1$Fecha)
+  Dato <- c(B1$SF223292,B1$SF223293)
+  Moneda <- c(rep("Nacional",length(B1$Fecha)), rep("Extranjera",length(B1$Fecha)))
+  #Asignar a B2 los datos para graficar Deuda del ector privado no financiero mexicano Corto y largo plazo
+  B2 <- data.frame(fecha, Moneda, Dato)
+rm(fecha,Nombres,Dato,Moneda) # limpia la pantalla de tablas o basura de un ejercicio anterior
+```
+
+```{r grafica 3 P, fig.cap=' Deuda Interna del del sector privado no financiero por Tipo de Moneda \\label{graf3}', fig.pos = 'H',fig.height=3.0}
+ggplot(B2,aes(x=fecha, y= Dato,color =Moneda ))  +
+  geom_line() + 
+  labs(title = "Deuda Interna del del sector privado no financiero por Tipo de Moneda") +  
+    theme_bw() +
+  theme(text=element_text(size=12,  family="serif"),
+        plot.title = element_text(size=rel(1.1),
+         # Tamaño del título, doble del establecido por defecto
+                            vjust=2, #Justificación vertical, para separarlo del gráfico
+                                    face="bold", #Letra negrilla
+                                    color="darkgreen", #Color del texto
+                                lineheight=1.1))+ #Separación entre líneas)) + 
+  scale_x_date(
+    name = "Años",
+    date_breaks ="year",# "1 Year",
+    position = "bottom",
+    labels=date_format("%Y"),
+    sec.axis = waiver())+
+  
+scale_y_continuous(
+  name = " Saldos a valor nominal (millones de pesos)",
+  position = "left",
+  n.breaks = 10,
+  sec.axis = waiver())+
+   #geom_hline(yintercept = prom1[2,1]/1000,colour = "red" ,caption="Prom")+
+# geom_point( col = "chartreuse4")+
+geom_hline(yintercept = 0,colour = "Blue" )
+
+```
+
+
+En la grafica \ref{graf3} se muestra como la deuda en moneda local ha tenido un crecmiento constante incluso duarante la pandemia, lo cual no se ve en la deuda emitida en moneda estranjera, tambien se muestra que las emisiones de deuda se realizan en una proporcion mucho mayor en moneda Nacional
+
+Las Figuras \ref{graf4}  y \ref{graf5}muestra las tasas de crecimiento  de la deuda del sector privado no financiero mexicano, en porcentaje  comparando el largo y corto plazo.
+
+```{r grafica 4 M, fig.cap=' Crecimiento de deuda del del sector privado no financiero Moneda Nacional \\label{graf4}', fig.pos = 'H',fig.height=2.0}
+ggplot(B1,aes(x=Fecha, y= Cre_1))  +
+  geom_line() + 
+  labs(title = "Crecimiento de deuda del del sector privado no financiero Moneda Nacional") +  
+    theme_bw() +
+  theme(text=element_text(size=12,  family="serif"),
+        plot.title = element_text(size=rel(1.1),
+         # Tamaño del título, doble del establecido por defecto
+                            vjust=2, #Justificación vertical, para separarlo del gráfico
+                                    face="bold", #Letra negrilla
+                                    color="darkgreen", #Color del texto
+                                lineheight=1.1))+ #Separación entre líneas)) + 
+  scale_x_date(
+    name = "Años",
+    date_breaks ="year",# "1 Year",
+    position = "bottom",
+    labels=date_format("%Y"),
+    sec.axis = waiver())+
+  
+scale_y_continuous(
+  name = " Tasa de Crecimiento (%) ",
+  position = "left",
+  n.breaks = 10,
+  sec.axis = waiver())+
+   #geom_hline(yintercept = prom1[2,1]/1000,colour = "red" ,caption="Prom")+
+# geom_point( col = "chartreuse4")+
+geom_hline(yintercept = 0,colour = "Blue" )
+```
+
+```{r grafica 5 M, fig.cap='Crecimiento de deuda del del sector privado no financiero Moneda Extranjera \\label{graf5}', fig.pos = 'H',fig.height=2.0}
+
+ggplot(B1,aes(x=Fecha, y= Cre_2))  +
+  geom_line() + 
+  labs(title = "Crecimiento de deuda del del sector privado no financiero Moneda Extranjera") +  
+    theme_bw() +
+  theme(text=element_text(size=12,  family="serif"),
+        plot.title = element_text(size=rel(1.1),
+         # Tamaño del título, doble del establecido por defecto
+                            vjust=2, #Justificación vertical, para separarlo del gráfico
+                                    face="bold", #Letra negrilla
+                                    color="darkgreen", #Color del texto
+                                lineheight=1.1))+ #Separación entre líneas)) + 
+  scale_x_date(
+    name = "Años",
+    date_breaks ="year",# "1 Year",
+    position = "bottom",
+    labels=date_format("%Y"),
+    sec.axis = waiver())+
+  
+scale_y_continuous(
+  name = " Tasa de Crecimiento (%) ",
+  position = "left",
+  n.breaks = 10,
+  sec.axis = waiver())+
+   #geom_hline(yintercept = prom1[2,1]/1000,colour = "red" ,caption="Prom")+
+# geom_point( col = "chartreuse4")+
+geom_hline(yintercept = 0,colour = "Blue" )
+```
+Se observa en la figura  \ref{graf4} y \ref{graf5} que Títulos de deuda emitidos por instituciones no financieras, Privadas en moneda extranjera tiene una mayor volatilidad e incluso en algunos periodos no se ha emitido deuda como paso durante la pandemia.
+
+A conticuacion  en la figura \ref{graf6} observamos la evolución histórica de la deuda total emitida por Instituciones No Financieras (SF110374) y la deuda emitida por Instituciones No Financieras Privadas (SF110355).
+
+
+```{r No Financieras Total}
+  B1$SF110355<- as.numeric(B1$SF110355) #Poner los datos en formato de numero Instituciones no financieras, Privadas 
+   B1$SF110374<- as.numeric(B1$SF110374) #Poner los datos en formato de numero  Instituciones no financieras, Total 
+  # Componer el vector para graficar En moneda local y  En moneda extranjera 
+B1<- B1 %>% mutate ( Cre_1=(SF110355/lag(SF110355)-1)*100, # privadas 
+                     Cre_2=(SF110374/lag(SF110374)-1)*100, # Total 
+                     Relacion=(SF110355/lag(SF110374))*100)
+
+  fecha<-c(B1$Fecha,B1$Fecha)
+  Dato <- c(B1$SF110355,B1$SF110374)
+  Tipo <- c(rep("Privada",length(B1$Fecha)), rep("Total",length(B1$Fecha)))
+  #Asignar a B2 los datos para graficar Deuda del ector privado no financiero mexicano Corto y largo plazo
+  B2 <- data.frame(fecha, Tipo, Dato)
+rm(fecha,Dato,Tipo) # limpia la pantalla de tablas o basura de un ejercicio anterior
+```
+
+```{r grafica 6 P, fig.cap=' Deuda Interna del del sector no financiero  \\label{graf6}', fig.pos = 'H',fig.height=3.0}
+ggplot(B2,aes(x=fecha, y= Dato,color =Tipo ))  +
+  geom_line() + 
+  labs(title = "Deuda Interna del del sector no financiero ") +  
+    theme_bw() +
+  theme(text=element_text(size=12,  family="serif"),
+        plot.title = element_text(size=rel(1.1),
+         # Tamaño del título, doble del establecido por defecto
+                            vjust=2, #Justificación vertical, para separarlo del gráfico
+                                    face="bold", #Letra negrilla
+                                    color="darkgreen", #Color del texto
+                                lineheight=1.1))+ #Separación entre líneas)) + 
+  scale_x_date(
+    name = "Años",
+    date_breaks ="year",# "1 Year",
+    position = "bottom",
+    labels=date_format("%Y"),
+    sec.axis = waiver())+
+  
+scale_y_continuous(
+  name = " Saldos a valor nominal (millones de pesos)",
+  position = "left",
+  n.breaks = 10,
+  sec.axis = waiver())+
+   #geom_hline(yintercept = prom1[2,1]/1000,colour = "red" ,caption="Prom")+
+# geom_point( col = "chartreuse4")+
+geom_hline(yintercept = 0,colour = "Blue" )
+
+```
+
+
+En la grafica \ref{graf6} se muestra que la deuda privada del sector no financiero tiene la misma tendencia de la deuda del sector no financiero total.
+
+En la figura  \ref{graf7} se muestra la relacion entre la deuda privada del sector no financiero y la  la deuda del sector no financiero total.
+
+```{r grafica 7 R, fig.cap='Relacion entre la deuda de Empresas privadas y total \\label{graf7}', fig.pos = 'H',fig.height=3.0}
+
+ggplot(B1,aes(x=Fecha, y= Relacion))  +
+  geom_line( color="blue") + 
+  labs(title = "Relacion entre la deuda de Empresas privadas y total del sector no financiero") +  
+    theme_bw() +
+  theme(text=element_text(size=12,  family="serif"),
+        plot.title = element_text(size=rel(1.1),
+         # Tamaño del título, doble del establecido por defecto
+         vjust=2, #Justificación vertical, para separarlo del gráfico
+         face="bold", #Letra negrilla
+         color="darkgreen", #Color del texto
+         lineheight=1.1))+ #Separación entre líneas)) + 
+  scale_x_date(
+    name = "Años",
+    date_breaks ="year",# "1 Year",
+    position = "bottom",
+    labels=date_format("%Y"),
+    sec.axis = waiver())+
+  
+scale_y_continuous(
+  name =  " Saldos a valor nominal (millones de pesos)",
+  position = "left",
+  limits = c(50, 70),
+  n.breaks = 10,
+  sec.axis = waiver())+
+   #geom_hline(yintercept = prom1[2,1]/1000,colour = "red" ,caption="Prom")+
+# geom_point( col = "chartreuse4")+
+geom_hline(yintercept = 0,colour = "Blue" )
+B1 <- B1[-c(1:127),]
+```
+Podemos ver en la Gráfica \ref{graf7} que el ratio sigue un patrón en forma “V” en los últimos 10 años oscilando entre un máximo de $66 \%$ en Enero de 2010 a un mínimo de $50.5 \%$ en Febrero de 2015. A partir de esta fecha la composición de la Emisión de títulos de Deuda de INFP respecto al total ha crecido hasta casi alcanzar nuevamente el máximo en Diciembre de 2021 de $ 69.5 \%).
+La fugura nos  permitió observar que en los últimos 5 años el ratio de la deuda de INFP respecto INFT ha aumentado hasta casi romper el techo de 10 años en Diciembre 2021,  haciendo ligeramente más riesgosa la deuda adquirida por las INFP.
+
+## 3 (c)
+\textit {Describa la evolucion de las cifras anteriores durante la pandemia de Covid-19, es decir entre principios de 2020 y hasta la fecha}.
+
+
+En la figura \ref{graf8} se observa  la relacion de entre la deuda de Empresas privadas y total, para el periodo de la pandemia.
+
+```{r grafica 9 P, fig.cap=' Deuda Interna del del sector no financiero en la pandemia  \\label{graf9}', fig.pos = 'H',fig.height=3.0}
+  fecha<-c(B1$Fecha,B1$Fecha)
+  Dato <- c(B1$SF110355,B1$SF110374)
+  Tipo <- c(rep("Privada",length(B1$Fecha)), rep("Total",length(B1$Fecha)))
+  #Asignar a B2 los datos para graficar Deuda del ector privado no financiero mexicano Corto y largo plazo
+  B2 <- data.frame(fecha, Tipo, Dato)
+
+
+ggplot(B2,aes(x=fecha, y= Dato,color =Tipo ))  +
+  geom_line() + 
+  labs(title = "Deuda Interna del del sector no financiero en la pandemia Covid 19") +  
+    theme_bw() +
+  theme(text=element_text(size=12,  family="serif"),
+        plot.title = element_text(size=rel(1.1),
+         # Tamaño del título, doble del establecido por defecto
+                            vjust=2, #Justificación vertical, para separarlo del gráfico
+                                    face="bold", #Letra negrilla
+                                    color="darkgreen", #Color del texto
+                                lineheight=1.1))+ #Separación entre líneas)) + 
+  scale_x_date(
+    name = "Años",
+    date_breaks ="4 month",# "1 Year",
+    position = "bottom",
+    labels=date_format("%m-%Y"),
+    sec.axis = waiver())+
+  
+scale_y_continuous(
+  name = " Saldos a valor nominal (millones de pesos)",
+  position = "left",
+  limits = c(500, 850),
+  n.breaks = 10,
+  sec.axis = waiver())+
+   #geom_hline(yintercept = prom1[2,1]/1000,colour = "red" ,caption="Prom")+
+# geom_point( col = "chartreuse4")+
+geom_hline(yintercept = 0,colour = "Blue" )
+
+```
+```{r grafica 8 R, fig.cap='Relacion entre la deuda de Empresas privadas y total \\label{graf8}', fig.pos = 'H',fig.height=3.0}
+
+ggplot(B1,aes(x=Fecha, y= Relacion))  +
+  geom_line(color="blue") + 
+  labs(title = "Relacion entre la deuda de Empresas privadas y total del sector no financiero") +  
+    theme_bw() +
+  theme(text=element_text(size=12,  family="serif"),
+        plot.title = element_text(size=rel(1.1),
+         # Tamaño del título, doble del establecido por defecto
+                            vjust=2, #Justificación vertical, para separarlo del gráfico
+                                    face="bold", #Letra negrilla
+                                    color="darkgreen", #Color del texto
+                                lineheight=1.1))+ #Separación entre líneas)) + 
+  scale_x_date(
+    name = "Años",
+    date_breaks ="4 month",# "1 Year",
+    position = "bottom",
+    labels=date_format("%m-%Y"),
+    sec.axis = waiver())+
+  
+scale_y_continuous(
+  name =  " Saldos a valor nominal (millones de pesos)",
+  position = "left",
+  limits = c(60, 70),
+  n.breaks = 10,
+  sec.axis = waiver())+
+   #geom_hline(yintercept = prom1[2,1]/1000,colour = "red" ,caption="Prom")+
+# geom_point( col = "chartreuse4")+
+geom_hline(yintercept = 0,colour = "Blue" )
+# limpia la pantalla de tablas o basura de un ejercicio anterior
+rm(list = ls())
+```
+
+En la figura \ref{graf9} se observa que al anunciarse el cierre de actividade por la pandemia de covid 2019, en marzo 2020 se obeserva una disminucion de la emision de deuda de todos los sectores, sin embargo en la figura \ref{graf8} que la relacion de deuda de las empresas privadas a aumentado con respecto a las empresas no financieras.
