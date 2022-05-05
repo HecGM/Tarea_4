@@ -40,6 +40,8 @@ knitr::opts_chunk$set(
 	message = FALSE,
 	warning = FALSE
 )
+
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.align="center", fig.pos = "H", fig.width = 7, fig.height = 3)
 ```
 
 \newpage
@@ -198,11 +200,15 @@ pacman::p_load(tidyverse,
                cowplot, ggplot2, scales, viridis, latticeExtra,
                knitr, tinytex, reshape, lubridate, scales, reshape2, seasonal, plm, latex2exp, tibble,Hmisc, zoo,
                dynlm, magrittr, stargazer,xtable,
-               rsq, MASS,jtools, plm, readr, gridExtra)
+               rsq, MASS,jtools, plm, readr, gridExtra, siebanxicor, httr, 
+               jsonlite,plotly,ggfortify,patchwork,latex2exp, tidyr, corrplot, RColorBrewer, curl, ggpubr,
+               data.table,foreign,psych,viridis,ggbeeswarm)
 
-
+options(knitr.kable.NA = "-")
 
 ```
+
+
 
 # Ejercicios prácticos
 ## Ejercicio 2
@@ -210,7 +216,7 @@ pacman::p_load(tidyverse,
 Estudie el financiamiento del sistema bancario en México a la luz del concepto de "transformación de madurez":
 
 ### a)
-Obtenga, del SIE/Financiamiento e información financiera de intermediarios financieros/ del Banco de México, información de las formas de financiamiento del sector bancario (comercial) mexicano, y haga gráficas describiendo la evolución en el tiempo de las distintas tipos de financiamiento (depósitos a la vista, financiamiento de mercado y otros) y de la proporción que cada uno representa del total. Es decir, hay que producir dos gráficas de series de tiempo en la que el valor total está constituido por varias partes intermedias.
+**Obtenga, del SIE/Financiamiento e información financiera de intermediarios financieros/ del Banco de México, información de las formas de financiamiento del sector bancario (comercial) mexicano, y haga gráficas describiendo la evolución en el tiempo de las distintas tipos de financiamiento (depósitos a la vista, financiamiento de mercado y otros) y de la proporción que cada uno representa del total. Es decir, hay que producir dos gráficas de series de tiempo en la que el valor total está constituido por varias partes intermedias.**
 
 
 La información sobre la Banca Comercial en México viene del Sistema de Información Económica de Banxico [^1].
@@ -285,8 +291,9 @@ knitr::kable(p_mean,booktabs = TRUE, format = 'latex', caption = "Media de la pr
 Es decir, el valor de H es mayor, incluso, que el valor de F y G. Esto indica que distintas fuentes de financiamiento han tenido una relevancia relativa creciente. 
 
 
+
 ### b)
-Obtenga de la misma fuente información del tipo de créditos que el sistema bancario (comercial) mexicano otorga, y haga gráficas describiendo la evolución en el tiempo de distintos tipos de crédito y de la proporción que cada uno representa del total. Al igual que en el inciso anterior, hay que producir dos gráficas de series de tiempo en la que el valor total está constituido por varias partes intermedias.
+**Obtenga de la misma fuente información del tipo de créditos que el sistema bancario (comercial) mexicano otorga, y haga gráficas describiendo la evolución en el tiempo de distintos tipos de crédito y de la proporción que cada uno representa del total. Al igual que en el inciso anterior, hay que producir dos gráficas de series de tiempo en la que el valor total está constituido por varias partes intermedias.**
 
 
 ```{r 2b1, fig.cap="Valor de los Activos en niveles", fig.pos="H"}
@@ -299,13 +306,13 @@ Activos <- base2 %>% filter(!row_number() %in% c(1:8)) %>%
 Activos$Fecha <- as.yearmon(Activos$Fecha, "%d/%m/%Y")
 
 Activos %>% dplyr::select(Fecha, A, B, C) %>% gather(variable, value, A:C) %>% ggplot(aes(x= Fecha, y = value, fill= variable))+ geom_area()+theme_bw() +labs(title = "Valor de los Activos en niveles", x="Año",y='Valor', 
-        colour = " ")
+        colour = " ")+scale_fill_brewer(palette="Set2")
 ```
 
 ```{r, fig.cap="Proporción del total de los Activos", fig.pos="H"}
 ##Calculamos las tasas de crecimiento
 Activos %>% dplyr::select(Fecha, pA, pB, pC) %>% gather(variable, value, pA:pC) %>% ggplot(aes(x= Fecha, y = value, fill= variable))+ geom_area()+theme_bw() +labs(title = "Proporción del total de los Activos", x="Año",y='Valor', 
-        colour = " ")
+        colour = " ")+scale_fill_brewer(palette="Accent")
 ```
 Utilizando la misma base de datos que en el inciso anterior podemos notar que la mayor parte de los activos que posee la banca privada en el país proviene de los créditos y la emisión de valores.
 
@@ -333,17 +340,20 @@ Credito <- Credito %>% filter(!row_number() %in% c(1:8)) %>%
   mutate(Total=as.numeric(Total),B1=as.numeric(B1),B2=as.numeric(B2),B3=as.numeric(B3)) %>%
   mutate(pB1=B1/Total*100,pB2=B2/Total*100,pB3=B3/Total*100)
 Credito$Fecha <- as.yearmon(Credito$Fecha, "%d/%m/%Y")
-Credito %>% dplyr::select(Fecha, B1, B2, B3) %>% gather(variable, value, B1:B3) %>% ggplot(aes(x= Fecha, y = value, fill= variable))+ geom_area()+theme_bw() +labs(title = "Cartera vigente total por destino del crédito", x="Año",y='Valor', colour = " ")
+Credito %>% dplyr::select(Fecha, B1, B2, B3) %>% gather(variable, value, B1:B3) %>% ggplot(aes(x= Fecha, y = value, fill= variable))+ geom_area()+theme_bw() +labs(title = "Cartera vigente total por destino del crédito", x="Año",y='Valor', colour = " ")+scale_fill_brewer(palette="Pastel1")
 
 ```
 Esta gráfica de igual manera podemos verla como una proporción, pero ya podemos notar que la mayor parte del crédito está concentrado a las empresas.
 
 ```{r, echo=FALSE,  fig.cap="Proporción de cartera vigente total por destino del crédito", fig.pos="H"}
-Credito %>% dplyr::select(Fecha, pB1, pB2, pB3) %>% gather(variable, value, pB1:pB3) %>% ggplot(aes(x= Fecha, y = value, fill= variable))+ geom_area()+theme_bw() +labs(title = "Proporción de cartera vigente total por destino del crédito", x="Año",y='Valor', colour = " ")
+Credito %>% dplyr::select(Fecha, pB1, pB2, pB3) %>% gather(variable, value, pB1:pB3) %>% ggplot(aes(x= Fecha, y = value, fill= variable))+ geom_area()+theme_bw() +labs(title = "Proporción de cartera vigente total por destino del crédito", x="Año",y='Valor', colour = " ")+scale_fill_brewer(palette="Dark2")
 ```
 En las proporciones podemos apreciar que en entre 2005 y 2010 el crédito al consumo creció en proporción, mientras que el crédito a la vivienda y a las empresas disminuyo, esto probablemente este ligado a la crisis financiera del 2008, los agentes necesitaron suavizar su consumo para el periodo ante la crisis.
 
+
 ### c)
+**Explique si los datos son consistentes con la hipótesis de que los bancos hacen transformación de madurez o si no lo son y porqué. Para ello posiblemente tenga que hacer supuestos (razonables) o buscar información adicional acerca de la madurez de los distintos tipos de financiamiento y crédito otorgado.**
+
 Del inciso a) de este ejercicio podemos retomar la base de datos y podemos reordenarla dividiendo la captación en inmediata y a plazos, mientras que agrupamos los financiamientos internos y externos juntos. Mientras que para se obtuvo información estadística publicada por el SIE para los plazos del crédito[^5].
 
 [^5]: Esta información se recuperó de la siguiente liga electrónica: https://www.banxico.org.mx/SieInternet/consultarDirectorioInternetAction.do?sector=7&accion=consultarCuadroAnalitico&idCuadro=CA209&locale=es consultado en 02/05/2022, 18:00.
@@ -357,7 +367,7 @@ Pasivos2 <- base2 %>% filter(!row_number() %in% c(1:8)) %>%
   mutate(pCaptacion_inmediata=Captacion_inmediata/Total*100, pCaptacion_plazos=Captacion_plazos/Total*100, pfinanciamiento_mercado=financiamiento_mercado/Total*100, potros=otros/Total*100)
 Pasivos2$Fecha <- as.yearmon(Pasivos2$Fecha, "%d/%m/%Y")
 
-ghpasivos <- Pasivos2 %>% dplyr::select(Fecha, Captacion_inmediata, Captacion_plazos, financiamiento_mercado, otros) %>% gather(variable, value, Captacion_inmediata:otros) %>% ggplot(aes(x= Fecha, y = value, fill= variable))+ geom_area()+theme_bw() +theme(legend.key.height= unit(.2, 'cm'), legend.key.width= unit(.4, 'cm'),legend.text = element_text(size=7), axis.title.x=element_blank(),axis.title.y=element_blank())
+ghpasivos <- Pasivos2 %>% dplyr::select(Fecha, Captacion_inmediata, Captacion_plazos, financiamiento_mercado, otros) %>% gather(variable, value, Captacion_inmediata:otros) %>% ggplot(aes(x= Fecha, y = value, fill= variable))+ geom_area()+theme_bw() +theme(legend.key.height= unit(.2, 'cm'), legend.key.width= unit(.4, 'cm'),legend.text = element_text(size=7), axis.title.x=element_blank(),axis.title.y=element_blank())+scale_fill_brewer(palette="Paired")
 
 
 credito2 <- read.csv("plazocredito.csv") 
@@ -368,22 +378,34 @@ credito2 <- credito2 %>% filter(!row_number() %in% c(1:8)) %>%
   mutate(pcredito_corto=credito_corto/Total*100,pcredito_largo_plazo=credito_largo_plazo/Total*100)
 credito2$Fecha <- as.yearmon(credito2$Fecha, "%d/%m/%Y")
 
-ghcreditos <- credito2 %>% dplyr::select(Fecha, credito_corto, credito_largo_plazo) %>% gather(variable, value, credito_corto:credito_largo_plazo) %>% ggplot(aes(x= Fecha, y = value, fill= variable))+ geom_area()+theme_bw()+theme(legend.key.height= unit(.2, 'cm'), legend.key.width= unit(.4, 'cm'), axis.title.y=element_blank() )
+ghcreditos <- credito2 %>% dplyr::select(Fecha, credito_corto, credito_largo_plazo) %>% gather(variable, value, credito_corto:credito_largo_plazo) %>% ggplot(aes(x= Fecha, y = value, fill= variable))+ geom_area()+theme_bw()+theme(legend.key.height= unit(.2, 'cm'), legend.key.width= unit(.4, 'cm'), axis.title.y=element_blank() )+scale_fill_brewer(palette="Set3")
 
 grid.arrange(ghpasivos, ghcreditos,ncol=1, nrow = 2, top = "Captación y Credito con plazos en niveles") 
 ```
 
 ```{r, echo=FALSE,fig.cap="Proporcion Captación y Credito con plazos", fig.pos="H"}
-ghpasivos2 <- Pasivos2 %>% dplyr::select(Fecha, pCaptacion_inmediata, pCaptacion_plazos, pfinanciamiento_mercado, potros) %>% gather(variable, value, pCaptacion_inmediata:potros) %>% ggplot(aes(x= Fecha, y = value, fill= variable))+ geom_area()+theme_bw() +theme(legend.key.height= unit(.2, 'cm'), legend.key.width= unit(.4, 'cm'),legend.text = element_text(size=7), axis.title.x=element_blank(),axis.title.y=element_blank())
+ghpasivos2 <- Pasivos2 %>% dplyr::select(Fecha, pCaptacion_inmediata, pCaptacion_plazos, pfinanciamiento_mercado, potros) %>% gather(variable, value, pCaptacion_inmediata:potros) %>% ggplot(aes(x= Fecha, y = value, fill= variable))+ geom_area()+theme_bw() +theme(legend.key.height= unit(.2, 'cm'), legend.key.width= unit(.4, 'cm'),legend.text = element_text(size=7), axis.title.x=element_blank(),axis.title.y=element_blank())+scale_fill_brewer(palette="Reds")
 
-ghcreditos2 <- credito2 %>% dplyr::select(Fecha, pcredito_corto, pcredito_largo_plazo) %>% gather(variable, value, pcredito_corto:pcredito_largo_plazo) %>% ggplot(aes(x= Fecha, y = value, fill= variable))+ geom_area()+theme_bw() +theme_bw()+theme(legend.key.height= unit(.2, 'cm'), legend.key.width= unit(.4, 'cm'), axis.title.y=element_blank() )
+ghcreditos2 <- credito2 %>% dplyr::select(Fecha, pcredito_corto, pcredito_largo_plazo) %>% gather(variable, value, pcredito_corto:pcredito_largo_plazo) %>% ggplot(aes(x= Fecha, y = value, fill= variable))+ geom_area()+theme_bw() +theme_bw()+theme(legend.key.height= unit(.2, 'cm'), legend.key.width= unit(.4, 'cm'), axis.title.y=element_blank())+scale_fill_brewer(palette="Purples")
 
 grid.arrange(ghpasivos2, ghcreditos2,ncol=1, nrow = 2, top = "Proporcion Captación y Credito con plazos") 
 ```
+Se cumple la teoría de maturity mismatch, donde la mayor parte del financiamiento que reciben los bancos en captación inmediata, mientras que los créditos que otorgan son en su mayor parte de largo plazo, lo cual nos deja con un riesgo de estabilidad financiera ante una corrida bancaria.
+
 
 ### d)
+**Explique qué implica la evolución de las formas de financiamiento y los tipos de crédito otorgados que observó en los incisos anteriores para la estabilidad del sistema financiero a la luz del modelo Diamond-Dybvig.**
+
+La evolución de la captación inmediata, la cual pasa ha ser más del 40% del financiamiento de los bancos, ha subido tanto que podría indicarnos un riesgo bancario creciente dado que los créditos son de largo plazo, incluso estos aumentaron en los últimos años.
+Esto va con lo que nos indica el modelo, donde los bancos son incapaces de satisfacer la demanda de liquidez en caso de una corrida, dado que sus inversiones son de largo plazo, lo cual deja vulnerable al país ante choques financieros.
+El choque se puede dar si existe una interrupción de las otras fuentes de financiamiento diferentes a las de captación, es decir, no solo existe el riesgo de pánico de los consumidores, sino otro problema que genere la deficiencia del la liquidez requerida.
+
+
+
 
 ### e)
+**A propósito, documente el incremento dramático a lo largo del tiempo en el crédito hipotecario como proporción del PIB.**
+
 A propósito, documente el incremento dramático a lo largo del tiempo en el crédito hipotecario como proporción del PIB. 
 ```{r d 1,include=FALSE}
 ## Cargamos la base de datos:
@@ -452,8 +474,8 @@ donde $t\in(2004,2021)$.
 En la siguiente gráfica se muestra la proporción del crédito hipotecario en el PIB real de México para los años 1994-2021. 
 
 ```{r, echo=FALSE,fig.cap="Proporción del Credito Hipotecario trimestral a precios de 2013 respecto al PIB", fig.pos="H"}
-grafica2e2 <- ggplot()+
-  geom_line(data=datos, aes(x=Fecha,y=pCH), color = "#990066")+
+grafica2e2 <- ggplot(data=datos, aes(x=Fecha,y=pCH))+
+  geom_area(fill="darkturquoise", color = "magenta2")+
   labs(title = "Proporción del Credito Hipotecario trimestral a precios de 2013 respecto al PIB", x="Fecha",y="Crédito Hipotecario")+
   theme_bw()
 plot(grafica2e2)
@@ -465,42 +487,13 @@ Es posible hacer un análisis un poco más desagregado para conocer la naturalez
 Lo interesante de este análisis es decir, por tanto, lo siguiente: el crédito hipotecario en México, para el periodo 2004-2021, ha aumentado su participación relativa en términos del PIB real.
 
 
-
+\newpage 
 ##  Ejercicio 3
-
-
-```{r setup 3, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.align="center", fig.pos = "H", fig.width = 7, fig.height = 3)
-```
-
-```{r include=FALSE}
-pacman::p_load(tidyverse,dplyr,foreign,psych,
-               ggthemes,
-               haven, readxl,
-               kableExtra,
-               cowplot, ggplot2, scales, viridis, latticeExtra,
-               knitr, tinytex, reshape, lubridate, scales, reshape2, MASS, dplyr,
-               jtools,
-              clusterGeneration,
-               stargazer,
-               xtable,
-               rsq,
-               wooldridge,MASS,
-              zoo, httr, jsonlite,plotly,ggfortify,patchwork,latex2exp, tidyr, corrplot, RColorBrewer, curl, ggpubr, data.table, ggbeeswarm, plyr, siebanxicor)
-
-
-options(knitr.kable.NA = "-")
-```
-
-
-\textbf{Estudie al gobierno mexicano y a los corporativos mexicanos desde el punto de vista de su endeudamiento}
+**Estudie al gobierno mexicano y a los corporativos mexicanos desde el punto de vista de su endeudamiento**
 
 
 ### a)
-\textit{Utilice datos del SIE/Valores en Circulación y de SIE/Finanzas públicas del Banco de México para describir la evolución a lo largo del tiempo de la composición de la deuda del gobierno mexicano por tipo de instrumento, madurez y moneda. Señale la implicación de lo que encuentre para el riesgo de impago.}
-
-\textbf{Solucion 3 (a)}
-\hfill
+**Utilice datos del SIE/Valores en Circulación y de SIE/Finanzas públicas del Banco de México para describir la evolución a lo largo del tiempo de la composición de la deuda del gobierno mexicano por tipo de instrumento, madurez y moneda. Señale la implicación de lo que encuentre para el riesgo de impago.**
 
 En primer lugar se clasifica la deuda pública en interna y externa, la deuda externa está, en general, denominada en moneda extranjera, la deuda interna está denominada en su mayoría en moneda local. La deuda interna y externa puede clasificarse como de corto (menor a un año) y de largo plazo (mayor a un año). Del SIE Banxico/Balanza de Pagos puede obtenerse información acerca de la deuda externa y su madurez.
 
@@ -640,13 +633,11 @@ plot.6
 
 Se observa una mayor variabilidad en la deuda interna a tasa variable, la deuda interna a tasa fija varía dentro de un rango más estrecho, pero positivo. A partir de 2021 se observan variaciones positivas y crecientes en la deuda tasa variable. De mantenerse la tendencia, ello podría representar un riesgo de impago, sobretodo al incluir los efectos de un aumento en las tasas de interés externas e internas.
 
-\hfill
 
 
 ### b)
-\textit {Utilice datos del SIE/Valores en Circulación o para describir la composición a lo largo del tiempo de la deuda del del sector privado no financiero mexicano por madurez y moneda. Señale la implicación de lo que encuentre para el riesgo de impago.}
+**Utilice datos del SIE/Valores en Circulación o para describir la composición a lo largo del tiempo de la deuda del del sector privado no financiero mexicano por madurez y moneda. Señale la implicación de lo que encuentre para el riesgo de impago.**
 
-\textbf{Solucion 3 (b)}
 
 Se obtuvieron series para Julio 2009 - Marzo 2022 del SIE Banxico de la base Clasificación de emisiones de títulos de deuda emitidos en el mercado local. En particular se seleccionaron las siguientes series:
 \begin{enumerate}
@@ -984,8 +975,9 @@ B1 <- B1[-c(1:127),]
 Podemos ver en la Gráfica \ref{graf7} que el ratio sigue un patrón en forma “V” en los últimos 10 años oscilando entre un máximo de $66 \%$ en Enero de 2010 a un mínimo de $50.5 \%$ en Febrero de 2015. A partir de esta fecha la composición de la Emisión de títulos de Deuda de INFP respecto al total ha crecido hasta casi alcanzar nuevamente el máximo en Diciembre de 2021 de $ 69.5 \%).
 La fugura nos  permitió observar que en los últimos 5 años el ratio de la deuda de INFP respecto INFT ha aumentado hasta casi romper el techo de 10 años en Diciembre 2021,  haciendo ligeramente más riesgosa la deuda adquirida por las INFP.
 
+
 ### c)
-\textit {Describa la evolucion de las cifras anteriores durante la pandemia de Covid-19, es decir entre principios de 2020 y hasta la fecha}.
+**Describa la evolucion de las cifras anteriores durante la pandemia de Covid-19, es decir entre principios de 2020 y hasta la fecha.**
 
 En primer lugar se estudia la evolución de la deuda pública en moneda extranjera de corto y largo plazo a partir de 2020:
 
@@ -1088,3 +1080,19 @@ rm(list = ls())
 ```
 
 En la figura \ref{graf9} se observa que al anunciarse el cierre de actividade por la pandemia de covid 2019, en marzo 2020 se obeserva una disminucion de la emision de deuda de todos los sectores, sin embargo en la figura \ref{graf8} que la relacion de deuda de las empresas privadas a aumentado con respecto a las empresas no financieras.
+
+
+\newpage
+## Ejercicio 4
+
+Para este ejercicio proponemos los siguientes conceptos:
+
+**Banks Run:** Una Banks run (o corrida bancaria en español) ocurre cuando un gran número de clientes de un banco u otra institución financiera retiran sus depósitos simultáneamente por preocupaciones sobre la solvencia del banco. A medida que más personas retiran sus fondos, aumenta la probabilidad de insolvencia de las instituciones, lo cual incita a otros agentes a retirar sus depósitos. En casos extremos, las reservas del banco pueden no ser suficientes para hacer frente a los retiros, por lo cual se considera que una corrida es una crisis de liquidez pura para las instituciones bancarias. 
+
+**Fondo de inversión:** El fondo de inversión es una forma de invertir dinero junto a otros inversores para beneficiarse de las ventajas inherentes al trabajo en grupo, como la reducción de los riesgos de la inversión en un porcentaje significativo. Estas ventajas incluyen la posibilidad de: contratar a gestores de inversión profesionales; que pueden ofrecer mejores rendimientos y una gestión del riesgo más adecuada; beneficiarse de las economías de escala, es decir, reducir los costes de transacción; aumentar la diversificación de los activos para reducir algunos riesgos no sistemáticos.
+
+**Título o Instrumento Subyacente:** A la variable financiera que es objeto o referencia de un contrato relativo a operaciones derivadas.
+
+**UDIs:** A las unidades de cuenta llamadas “Unidades de Inversión” establecidas en el “Decreto por el que se establecen las obligaciones que podrán denominarse en Unidades de Inversión y reforma y adiciona diversas disposiciones del Código Fiscal de la Federación y de la Ley del Impuesto sobre la Renta” publicado en el Diario Oficial de la Federación el 1 de abril de 1995, tal como el mismo sea modificado o adicionado de tiempo en tiempo.
+
+**Yield gap:** El yield gap o brecha de rendimiento en español, es una forma de comparar el rendimiento de los bonos y las acciones. La brecha o gap se define como el rendimiento medio de las acciones menos el rendimiento medio de los bonos. Dado que las acciones suelen ser inversiones más arriesgadas que los bonos, es de esperar que tengan un mayor rendimiento. En la práctica, la brecha de rendimiento suele ser negativa, ya que los bonos rinden más que las acciones. Esto no se debe a que los inversores consideren las acciones más seguras que los bonos. Más bien se debe a que esperan que la mayor parte del beneficio de la compra de acciones provenga de un aumento de su precio (revalorización del capital) más que del pago de dividendos. Los inversores en bonos suelen esperar que la mayor parte de sus ganancias provengan del pago de cupones. También les preocupa que la inflación erosione el valor real de los cupones futuros, haciendo que valoren más los pagos actuales que los que vencen en los próximos años. Además, la utilidad de la rentabilidad de los dividendos como guía del rendimiento de las acciones ha disminuido desde principios de la década de 1990, ya que cada vez más las empresas han optado por devolver el efectivo a los accionistas mediante la recompra de sus propias acciones en lugar de pagar mayores dividendos.
