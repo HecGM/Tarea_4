@@ -416,7 +416,7 @@ Notemos que la participación relativa del crédito bancario en el crédito hipo
 Lo interesante de este análisis es decir, por tanto, lo siguiente: el crédito hipotecario en México, para el periodo 1994-2021, ha aumentado su participación relativa en términos del PIB real, y al menos en un 60 por ciento la proporción es de crédito hipotecario no bancario. 
 
 
-#  Ejercicio 3
+##  Ejercicio 3
 
 
 ```{r setup 3, include=FALSE}
@@ -446,7 +446,7 @@ options(knitr.kable.NA = "-")
 \textbf{Estudie al gobierno mexicano y a los corporativos mexicanos desde el punto de vista de su endeudamiento}
 
 
-## a)
+### a)
 \textit{Utilice datos del SIE/Valores en Circulación y de SIE/Finanzas públicas del Banco de México para describir la evolución a lo largo del tiempo de la composición de la deuda del gobierno mexicano por tipo de instrumento, madurez y moneda. Señale la implicación de lo que encuentre para el riesgo de impago.}
 
 \textbf{Solucion 3 (a)}
@@ -593,7 +593,7 @@ Se observa una mayor variabilidad en la deuda interna a tasa variable, la deuda 
 \hfill
 
 
-## b)
+### b)
 \textit {Utilice datos del SIE/Valores en Circulación o para describir la composición a lo largo del tiempo de la deuda del del sector privado no financiero mexicano por madurez y moneda. Señale la implicación de lo que encuentre para el riesgo de impago.}
 
 \textbf{Solucion 3 (b)}
@@ -934,7 +934,7 @@ B1 <- B1[-c(1:127),]
 Podemos ver en la Gráfica \ref{graf7} que el ratio sigue un patrón en forma “V” en los últimos 10 años oscilando entre un máximo de $66 \%$ en Enero de 2010 a un mínimo de $50.5 \%$ en Febrero de 2015. A partir de esta fecha la composición de la Emisión de títulos de Deuda de INFP respecto al total ha crecido hasta casi alcanzar nuevamente el máximo en Diciembre de 2021 de $ 69.5 \%).
 La fugura nos  permitió observar que en los últimos 5 años el ratio de la deuda de INFP respecto INFT ha aumentado hasta casi romper el techo de 10 años en Diciembre 2021,  haciendo ligeramente más riesgosa la deuda adquirida por las INFP.
 
-## c)
+### c)
 \textit {Describa la evolucion de las cifras anteriores durante la pandemia de Covid-19, es decir entre principios de 2020 y hasta la fecha}.
 
 En primer lugar se estudia la evolución de la deuda pública en moneda extranjera de corto y largo plazo a partir de 2020:
