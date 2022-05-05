@@ -54,7 +54,7 @@ Resuelva los ejercicios 10.4 y 10.5  (5a edición). Realice estos con ayuda de s
 
 Un enfoque más simple para los costos de agencia: compromiso limitado. (Lacker \& Weinberg, 1989; Holmström y Tirole, 1998.) Considere el modelo de la Sección 10.2 con una fricción diferente: no hay costo de verificar la producción, pero el empresario puede acultar la fracción $1-f$ de la producción del proyecto al inversionista (con $0 \leq f \leq 1$ ). Por lo tanto, el emprendedor solo puede prometer de manera cresble pagar la fracción $f$ de la producción del proyecto.
 
-### a)
+#### a)
 Considere un proyecto con el pago esperado $\gamma$ que excede $1+r . \dot{b}$ ¿Cuál es la condición para llevar a cabo el proyecto?
 
 Recordemos que asumimos la producción del proyecto se distribuye uniformemente sobre $[0 ; 2]$, con valor esperado $\gamma$, que tanto el empresario como los inversores son neutrales al riesgo, que existe una tecnología sin riesgo o información asimétrica que produce una tasa de retorno de $r$ con seguridad, y que los inversores externos son competitivos, entonces:
@@ -89,7 +89,7 @@ $$
 \gamma f \geq(1+r)(1-W)
 $$
 
-### b)
+#### b)
 Suponga que la condición que encontró en la parte (a) se satisface con una desigualdad estricta.
 $$
 \gamma f>(1+r)(1-W)
@@ -102,7 +102,7 @@ R(D)=(1+r)(1-W)
 $$
 con $R(\cdot)$ la función de rendmientos esperados del inversor
 
-### c)
+#### c)
 
 La capacidad de compromiso limitada conduce a la ineficiencia (en relación con el caso en que no hay fricciones) si $\gamma>1+r$ pero el proyecto no se lleva a cabo. Describa si cada uno de los sigusientes puede hacer que un proyecto con $\gamma>1+r$ no se lleve a cabo:
 1) Una caida en la riqueza del emprendedor, W.
@@ -135,7 +135,7 @@ Si $b$ aumentara estaríamos en la situación contraria a la del inciso ii, ya q
 \newpage
 
 ### Romer 10.5
-### a) 
+#### a) 
 Demuestre que en el modelo analizado en las ecuaciones $(10.15) - (10.23)$ de la Sección 10.4, las distribuciones incondicionales de $C^a _{2t}$ y $C^n _{2t}$ no son normales.
 
 Analizando la media de las distribuciones se tiene:
@@ -174,7 +174,7 @@ $$
 $$-\dfrac{\left(2gc-1\right)\mathrm{e}^{2g \text c}}{4g^2} \neq \mu$$
 Lo cual indica que la esperanza de dicha distribución es variable y no constante, contrario a lo que se presenta en una distribución normal
 
-### b)
+#### b)
 Explique en una oración o dos por qué el análisis del texto, que usa las propiedades de las distribuciones log normales, es correcto.
 
 A comparación del punto anterior, aplicando la lógica de texto se tiene que:
@@ -298,8 +298,8 @@ plot(plot_2b2)
 # limpia la pantalla de tablas o basura de un ejercicio anterior
 rm(list = ls())
 ```
-## d)
-## A propósito, documente el incremento dramático a lo largo del tiempo en el crédito hipotecario como proporción del PIB. 
+### d)
+A propósito, documente el incremento dramático a lo largo del tiempo en el crédito hipotecario como proporción del PIB. 
 ```{r d 1,include=FALSE}
 ## Cargamos la base de datos: 
 credito.hipotecario <- read.csv("credito hipotecario.csv")
@@ -419,9 +419,11 @@ Lo interesante de este análisis es decir, por tanto, lo siguiente: el crédito 
 #  Ejercicio 3
 
 
+```{r setup 3, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.align="center", fig.pos = "H", fig.width = 7, fig.height = 3)
+```
 
-
-```{r}
+```{r include=FALSE}
 pacman::p_load(tidyverse,dplyr,foreign,psych,
                ggthemes,
                haven, readxl,
@@ -433,7 +435,8 @@ pacman::p_load(tidyverse,dplyr,foreign,psych,
                stargazer,
                xtable,
                rsq,
-               wooldridge,MASS)
+               wooldridge,MASS,
+              zoo, httr, jsonlite,plotly,ggfortify,patchwork,latex2exp, tidyr, corrplot, RColorBrewer, curl, ggpubr, data.table, ggbeeswarm, plyr, siebanxicor)
 
 
 options(knitr.kable.NA = "-")
@@ -443,22 +446,154 @@ options(knitr.kable.NA = "-")
 \textbf{Estudie al gobierno mexicano y a los corporativos mexicanos desde el punto de vista de su endeudamiento}
 
 
-\begin{center}
-Empecemos
-\end{center}
-## 3 (a)
+## a)
 \textit{Utilice datos del SIE/Valores en Circulación y de SIE/Finanzas públicas del Banco de México para describir la evolución a lo largo del tiempo de la composición de la deuda del gobierno mexicano por tipo de instrumento, madurez y moneda. Señale la implicación de lo que encuentre para el riesgo de impago.}
 
 \textbf{Solucion 3 (a)}
+\hfill
+
+En primer lugar se clasifica la deuda pública en interna y externa, la deuda externa está, en general, denominada en moneda extranjera, la deuda interna está denominada en su mayoría en moneda local. La deuda interna y externa puede clasificarse como de corto (menor a un año) y de largo plazo (mayor a un año). Del SIE Banxico/Balanza de Pagos puede obtenerse información acerca de la deuda externa y su madurez.
+
+```{r echo=FALSE}
+#Este código permite la descarga directa de la series del SIE BANXICO
+
+tkn <- '13a2eee0e4323e6b8e7583483f63bf485865b8a33de880e88e5c9c51787c89d8'
+library(siebanxicor)
+setToken(tkn)
+idSeriese<-c("SE44970", "SE44976")
+dexterna <- getSeriesData(idSeriese, "2009-01-01","2021-12-01") 
+dexterna <- as.data.frame(dexterna) %>% dplyr::rename("date" = "SE44970.date") %>% dplyr::rename ("Deuda externa a largo plazo" = "SE44976.value") %>% dplyr::rename ("Deuda externa a corto plazo" = "SE44970.value")
+
+dexterna <- dexterna[,-3]
+
+#Ahora se convierten a series de tiempo con frecuencia trimestral
+
+ts.dexterna <- ts(dexterna, freq = 4, start = c(2009.1))
+
+#Posteriormente se grafica:
+
+plot.1 <- autoplot(ts.dexterna[,2:3]) + 
+  labs(title = 'Deuda en moneda extranjera',
+       y = 'Millones de dólares',
+       x = 'Año',
+       caption = 'Fuente: Elaboración propia con datos de Banxico')
+plot.1
+```
+
+Se observa que la deuda en moneda extranjera a largo plazo presentó un comportamiento ascendente desde el inicio de la serie en 2009, estabilizandose a partir de 2016. El ascenso inicial puede explicarse por la etapa de bajas tasas de interés externas posterior a la crisis financiera de 2008-2009. La deuda externa a corto plazo es menor que la de largo plazo durante todo el periodo, presenta una tendencia creciente a partir de 2010, alcanzando su nivel más elevado en 2014, para descender nuevamente hasta volver a niveles cercanos a los de 2009 en 2021.
+
+La estructura de la deuda del sector público en moneda extranjera no parece generar un riesgo de impago elevado, la deuda externa a corto plazo es una proporción muy pequeña del total de la deuda externa, además, la deuda a largo plazo se ha mantenido estable desde 2016, incluso durante la pandemia de COVID-19 no muestra cambios significativos.
+
+Posteriormente se muestran las series en cambios de los logarítmos
+
+```{r, echo=FALSE}
+#Se transforman los datos a cambios trimestre a trimestre de los logaritmos:
+
+ds.dexterna <- as.data.frame(dexterna) %>% mutate(`Cambio en deuda externa a LP` = c(NA, diff(log(`Deuda externa a largo plazo`))), `Cambio en deuda externa a CP` = c(NA, diff(log(`Deuda externa a corto plazo`))))
+
+ts.ds.dexterna <- ts(ds.dexterna, freq = 4, start = c(2009.4))
+
+plot.2 <- autoplot(ts.ds.dexterna[,4:5]) + 
+  labs(title = 'Deuda en moneda extranjera en diferencias',
+       y = 'Tasas de cambio',
+       x = 'Año',
+       caption = 'Fuente: Elaboración propia con datos de Banxico')
+plot.2
+```
+Al graficar en diferencias se observa que la deuda en moneda extranjera a largo plazo tiene más variabilidad que la de corto plazo durante todo el periodo. La variación de la deuda externa alargo plazo es especialmente alta al inicio de la serie en 2009, posteriormente la variabilidad disminuye. La deuda externa a corto plazo muestra poca variabilidad. Ello podría sugerir que el Gobierno Mexicano prefiere financiarse a corto plazo en el mercado interno.
+
+A continuación se presenta un análisis similar para deuda interna, en moneda nacional:
+
+```{r, echo=FALSE}
+#Este código permite la descarga directa de la series del SIE BANXICO
+setToken(tkn)
+idSeriesi<-c("SF110508", "SF110509")
+dinterna <- getSeriesData(idSeriesi, "2009-06-01","2021-12-01") 
+dinterna <- as.data.frame(dinterna) %>% dplyr::rename("date" = "SF110508.date") %>% dplyr::rename ("Deuda interna a corto plazo" = "SF110508.value") %>% dplyr::rename ("Deuda interna largo plazo" = "SF110509.value")
+
+dinterna <- dinterna[,-3]
+
+#Ahora se convierten a series de tiempo con frecuencia trimestral
+
+ts.dinterna <- ts(dinterna, freq = 12, start = c(2009.6))
+
+#Posteriormente se grafica:
+
+plot.3 <- autoplot(ts.dinterna[,2:3]) + 
+  labs(title = 'Deuda en moneda nacional',
+       y = 'Miles de millones de pesos',
+       x = 'Año',
+       caption = 'Fuente: Elaboración propia con datos de Banxico')
+plot.3
+```
+
+Se observan diferencuas muy relevantes entre la deuda interna a corto y a largo plazo, la deuda en moneda nacional a largo plazo muestra ua tendencia creciente relativamente pronunciada durante todo el periodo (junio 2009 - diciembre 2021). La deuda interna presenta una tendencia de reducción hasta mediados de 2011, posteriormente presenta un aumento moderado, después de 2020 la deuda interna también presenta una tendencia claramente creciente. En el caso de la deuda en moneda nacional se observan tendencias crecientes en la de corto y largo plazo, resulta relevante analisar las tasas a las que crece, por ello se presentan las series en diferencias de sus logartimos.
+
+```{r, echo=FALSE}
+#Se transforman los datos a cambios mes a mes de los logaritmos:
+
+ds.dinterna <- as.data.frame(dinterna) %>% mutate(`Cambio en deuda interna largo plazo` = c(NA, diff(log(`Deuda interna largo plazo`))), `Cambio en deuda interna a largo plazo` = c(NA, diff(log(`Deuda interna a corto plazo`))))
+
+ts.ds.dinterna <- ts(ds.dinterna, freq = 12, start = c(2009.6))
+
+plot.4 <- autoplot(ts.ds.dinterna[,4:5]) + 
+  labs(title = 'Deuda en moneda nacional en diferencias',
+       y = 'Tasas de cambio',
+       x = 'Año',
+       caption = 'Fuente: Elaboración propia con datos de Banxico')
+plot.4
+```
+
+De nuevo se observa una mayor variabilidad en el comportamiento de la deuda a largo plazo, en este caso en moneda nacional, se observan tasas negativas de endeudamiento a largo plazo alrededor de 2011 y tasas positivas y "elevadas" en 2020, lo que sugiere un aumento en el endeudamiento a largo plazo al inicio de la pandemia por COVID-19. La deuda interna acorto plazo presenta menor variabilidad. Es necesario observar el comportamiento en los próximos meses y años de la deuda interna a largo plazo, pues si no se estabilizara representaría un aumento en el riesgo de impago.
+
+Ahora se presenta la evolución de algunos instrumentos de deuda en moneda nacional del Gobierno Mexicano. Se entenderá por tipo de instrumento al tipo de tasa, es decir, tasa de interés fija o variable; también se considero incluir instrumentos como CETES, BONDES, BONOS y UDIBONOS, pero al tratarse de una pregunta acerca del riesgo de impago se considera de mayor relevancia incluir la clasificación por instrumentos de tasas fija y variable.
+
+```{r, echo=FALSE}
+#Este código permite la descarga directa de la series del SIE BANXICO
+setToken(tkn)
+idSeriest<-c("SF110513", "SF110515")
+dinternat <- getSeriesData(idSeriest, "2009-06-01","2021-12-01") 
+dinternat <- as.data.frame(dinternat) %>% dplyr::rename("date" = "SF110513.date") %>% dplyr::rename ("Deuda interna a tasa fija" = "SF110513.value") %>% dplyr::rename ("Deuda interna a tasa variable" = "SF110515.value")
+
+dinternat <- dinternat[,-3]
+
+#Ahora se convierten a series de tiempo con frecuencia trimestral
+
+ts.dinternat <- ts(dinternat, freq = 12, start = c(2009.6))
+
+#Posteriormente se grafica:
+
+plot.5 <- autoplot(ts.dinternat[,2:3]) + 
+  labs(title = 'Deuda por tipo de tasa',
+       y = 'Miles de millones de pesos',
+       x = 'Año',
+       caption = 'Fuente: Elaboración propia con datos de Banxico')
+plot.5
+```
+
+Se observa una tendencia creciente en ambos tipos de deuda, sin embargo la deuda a tasa fija parece crecer de forma más acelerada que la deuda a tasa variable. A inicios de 2021 se observa una aceleración en el crecimiento de la deuda a tasa variable, probablemente por el inicio del ciclo de alsa en tasas. También se presentan las gráficas en tasas de cambio:
+
+```{r, echo=FALSE}
+#Se transforman los datos a cambios mes a mes de los logaritmos:
+
+ds.dinternat <- as.data.frame(dinternat) %>% mutate(`Cambio en deuda a tasa fija` = c(NA, diff(log(`Deuda interna a tasa fija`))), `Cambio en deuda tasa variable` = c(NA, diff(log(`Deuda interna a tasa variable`))))
+
+ts.ds.dinternat <- ts(ds.dinternat, freq = 12, start = c(2009.6))
+
+plot.6 <- autoplot(ts.ds.dinternat[,4:5]) + 
+  labs(title = 'Deuda por tipo de tasa en diferencias',
+       y = 'Tasas de cambio',
+       x = 'Año',
+       caption = 'Fuente: Elaboración propia con datos de Banxico')
+plot.6
+```
+
+Se observa una mayor variabilidad en la deuda interna a tasa variable, la deuda interna a tasa fija varía dentro de un rango más estrecho, pero positivo. A partir de 2021 se observan variaciones positivas y crecientes en la deuda tasa variable. De mantenerse la tendencia, ello podría representar un riesgo de impago, sobretodo al incluir los efectos de un aumento en las tasas de interés externas e internas.
+
+\hfill
 
 
-Se obtuvieron series para Julio 2009 a Febrero 2020 del SIE Banxico de la base Valores en Circulación:
-Clasificación de emisiones de títulos de deuda emitidos en el mercado local (CF460). También se
-consultó la base Finanzas Públicas: Deuda Neta Total del Sector Público, saldo promedio y final
-(CG7) Todas las series en niveles de Miles de Millones de Pesos
-
-
-## 3 (b)
+## b)
 \textit {Utilice datos del SIE/Valores en Circulación o para describir la composición a lo largo del tiempo de la deuda del del sector privado no financiero mexicano por madurez y moneda. Señale la implicación de lo que encuentre para el riesgo de impago.}
 
 \textbf{Solucion 3 (b)}
@@ -485,8 +620,7 @@ La Figura \ref{graf1} muestra las series de la deuda de instituciones no financi
 
 
 ```{r No Financieras Privadas}
-# limpia la pantalla de tablas o basura de un ejercicio anterior
-rm(list = ls())
+
 #Leeer el archivo de los datos de Valores en circulación y guardarlo en B1
   B1 <- read_xlsx("Valores en circulacion.xlsx")
   Nombres<- B1 [11,]
@@ -544,6 +678,15 @@ La Figura \ref{graf2} muestra las tasas de crecimiento  de la deuda del sector p
 
 
 ```{r No Financieras  crecimiento }
+  B1 <- read_xlsx("Valores en circulacion.xlsx")
+  Nombres<- B1 [11,]
+  colnames(B1) <- Nombres
+  B1 <- B1[-c(1:28),]
+  B1$Fecha= as.Date(as.numeric(B1$Fecha)-2, origin="1900-01-01")
+ # firltrar la basse de datos B1, de acuerdo a las seriers requeridas. SF110356,SF110357,SF223292,SF223293
+  B1<- B1%>%
+dplyr::select(Fecha,SF110356,SF110357,SF223292,SF223293, SF110374,SF110355 )
+
   B1$SF110356<- as.numeric(B1$SF110356) #Poner los datos en formato de numero 
    B1$SF110357<- as.numeric(B1$SF110357) #Poner los datos en formato de numero 
   # Componer el vector para tasas de crecimiento en corto y largo plazo.
@@ -555,7 +698,7 @@ B1<- B1 %>% mutate ( Cre_1=(SF110356/lag(SF110356)-1)*100,
   Plazo <- c(rep("Corto",length(B1$Fecha)), rep("Largo",length(B1$Fecha)))
   #Asignar a B2 los datos para graficar Deuda del ector privado no financiero mexicano Corto y largo plazo
   B2 <- data.frame(fecha, Plazo, Dato)
-rm(fecha,Dato,Plazo) # limpia la pantalla de tablas o basura de un ejercicio anterior
+rm(fecha,Nombres,Dato,Plazo) # limpia la pantalla de tablas o basura de un ejercicio anterior
 ```
 
 ```{r grafica 2 P, fig.cap='Crecimiento Deuda Interna del del sector privado no financiero \\label{graf2}', fig.pos = 'H',fig.height=3.0}
@@ -791,8 +934,35 @@ B1 <- B1[-c(1:127),]
 Podemos ver en la Gráfica \ref{graf7} que el ratio sigue un patrón en forma “V” en los últimos 10 años oscilando entre un máximo de $66 \%$ en Enero de 2010 a un mínimo de $50.5 \%$ en Febrero de 2015. A partir de esta fecha la composición de la Emisión de títulos de Deuda de INFP respecto al total ha crecido hasta casi alcanzar nuevamente el máximo en Diciembre de 2021 de $ 69.5 \%).
 La fugura nos  permitió observar que en los últimos 5 años el ratio de la deuda de INFP respecto INFT ha aumentado hasta casi romper el techo de 10 años en Diciembre 2021,  haciendo ligeramente más riesgosa la deuda adquirida por las INFP.
 
-## 3 (c)
+## c)
 \textit {Describa la evolucion de las cifras anteriores durante la pandemia de Covid-19, es decir entre principios de 2020 y hasta la fecha}.
+
+En primer lugar se estudia la evolución de la deuda pública en moneda extranjera de corto y largo plazo a partir de 2020:
+
+```{r, echo=FALSE}
+x <- ts(dexterna[-(1:44),], freq = 4, start = c(2020))
+plot.11 <- autoplot(x[,2:3]) + 
+  labs(title = 'Deuda pública en moneda extranjera',
+       y = 'Millones de dólares',
+       x = 'Año',
+       caption = 'Fuente: Elaboración propia con datos de Banxico')
+plot.11
+```
+Se observa una tendencia al alza de la deuda externa a corto plazo durante los primeros meses de la pandemia por COVID-19, posteriormente la tendencia es de descenso sostenido.
+
+En el caso de la deuda pública en moneda extranjera a largo plazo se presenta una fuerte tendencia al alza en los primeros meses de la pandemia, alcanzando un pico en el tercer trimestre de 2020 y comenzando un descenso sostenido.
+Ahora se presenta el comportamiento de la deuda privada:
+
+```{r, echo=FALSE}
+y <- ts(dexterna[-(1:44),], freq = 4, start = c(2020))
+plot.13 <- autoplot(y[,2:3]) + 
+  labs(title = 'Deuda privada en moneda extranjera',
+       y = 'Millones de dólares',
+       x = 'Año',
+       caption = 'Fuente: Elaboración propia con datos de Banxico')
+plot.13
+```
+
 
 
 En la figura \ref{graf8} se observa  la relacion de entre la deuda de Empresas privadas y total, para el periodo de la pandemia.
