@@ -384,10 +384,35 @@ grid.arrange(ghpasivos2, ghcreditos2,ncol=1, nrow = 2, top = "Proporcion Captaci
 ### d)
 
 ### e)
-## A propósito, documente el incremento dramático a lo largo del tiempo en el crédito hipotecario como proporción del PIB. 
+A propósito, documente el incremento dramático a lo largo del tiempo en el crédito hipotecario como proporción del PIB. 
 ```{r d 1,include=FALSE}
-## Cargamos la base de datos: 
-##credito.hipotecario <- read.csv("credito_hipotecario.csv")
+## Cargamos la base de datos:
+INPP <- read.csv("INPP.csv")
+INPP <- INPP %>% filter(!row_number() %in% 1) %>% 
+  setNames(., c("Fecha", "INPP_2019")) %>% 
+  mutate(INPP_2013=INPP_2019/INPP_2019[115]*100)
+
+hip <- read.csv("Credito.csv")
+hip <- hip%>% filter(!row_number() %in% c(1:20)) %>%
+  dplyr::select(1,18) %>% 
+  setNames(., c("Fecha", "Credito_hipotecario")) %>% 
+  mutate(Credito_hipotecario=as.numeric(Credito_hipotecario))
+hip$CH1 <-hip$Credito_hipotecario/INPP$INPP_2013*100
+hip$Fecha <- as.yearqtr(hip$Fecha, "%d/%m/%Y")
+hip <- hip %>% group_by(Fecha) %>% 
+  summarise(CH1, CH = mean(CH1), .groups = 'drop')
+hip <- hip[!duplicated(hip[c('CH')]),]
+hip <- hip %>% dplyr::select(1,3)
+
+
+PIB <- read.csv("PIB.csv")
+PIB$Periodos <- as.yearqtr(PIB$Periodos, "%Y/%q")
+PIB <- PIB %>% filter(!row_number() %in% c(1:96,73)) %>% 
+  setNames(., c("Fecha", "PIB"))
+
+
+datos <- cbind(hip,PIB=PIB$PIB)
+datos <- datos  %>%  mutate(pCH=CH/PIB*100)
 ```
 
 Una de las consecuencias de la penetración financiera y del crecimiento demográfico es el crecimiento del crédito en general, tanto el crédito al consumo como el crédito hipotecario o a la vivienda. En general, la tendencia que se esperaría es creciente en términos reales para el crédito, y también, como porcentaje del PIB. 
@@ -395,110 +420,49 @@ Una de las consecuencias de la penetración financiera y del crecimiento demogr�
 Para analizar este inciso, se utilizaron las siguientes series: 
 \begin{enumerate}
 \item{} Serie desestacionalizada del PIB a precios 2013 trimestral
-\item{} Serie de crédito hipotecario trimestral 
+\item{} Serie de crédito hipotecario mensual, que viene del inciso b) 
 \end{enumerate}
 
-Notemos que la serie de crédito hipotecario está dada en términos nominales, por lo que tuvimos que deflactarla con el INPC, el cual fue obtenido directamente de INEGI.  Como lo que nos interesa ver en este ejercicio es cómo ha variado en proporción respecto al PIB real, entonces también el numerador tiene que estar en términos reales, es decir, descontando la inflación [^6]. 
+Notemos que la serie de crédito hipotecario está dada en términos nominales, por lo que tuvimos que deflactarla con el INPP sin petroleo, el cual fue obtenido directamente de INEGI.  Como lo que nos interesa ver en este ejercicio es cómo ha variado en proporción respecto al PIB real, entonces también el numerador tiene que estar en términos reales, es decir, descontando la inflación [^6]. 
 
-[^6]: El PIB se obtuvo de la siguiente liga electrónica: https://www.inegi.org.mx/temas/pib/#Tabulados, consultado en 3/5/2022, 1:17. La fuente para el crédito hipotecario se obtuvo de la siguiente liga electrónica: https://www.banxico.org.mx/SieInternet/consultarDirectorioInternetAction.do?sector=19&accion=consultarCuadro&idCuadro=CF88&locale=es, consultado en 3/5/2022, 1:18. El INPC y el IPP se obtuvieron de la siguiente liga: https://www.inegi.org.mx/app/indicesdeprecios, consultado en 4/5/2022, 14:30. 
+[^6]: El PIB se obtuvo de la siguiente liga electrónica: https://www.inegi.org.mx/temas/pib/#Tabulados, consultado en 3/5/2022, 1:17. El INPC y el IPP se obtuvieron de la siguiente liga: https://www.inegi.org.mx/app/indicesdeprecios, consultado en 4/5/2022, 14:30. 
 
-En el siguiente cuadro se observan las primeras observaciones para la serie de tiempo de ambas variables sujetas a análisis. La variable $PIB$ real está a precios de 2013 y en miles de millones mientras que la variable $Crédito Hipotecario$ en millones a precios de 2013 también. 
+En la siguiente gráfica se observan las primeras observaciones para la serie de tiempo de ambas variables sujetas a análisis. La variable $PIB$ real está a precios de 2013 y en miles de millones mientras que la variable $Crédito Hipotecario$ en millones a precios de 2013 también. 
 
-\newpage
 
-| **Tiempo**  	| **PIB** 	| **Crédito Hipotecario** 	| **Tiempo** 	| **PIB** 	| **Crédito Hipotecario** 	|
-|:---:	|:---:	|:---:	|:---:	|:---:	|:---:	|
-| 1997 	| 7828115.671 	| 11039400 	| 2009 	| 14088658 	| 107231158.1 	|
-| 1998 	| 11804221.94 	| 11901675 	| 2010 	| 14728836 	| 145722409.3 	|
-| 1999 	| 19991016.22 	| 12187248 	| 2011 	| 15263123 	| 142080201.8 	|
-| 2000 	| 38746645.9 	| 12727264 	| 2012 	| 15847711 	| 153026710.1 	|
-| 2001 	| 31963661.05 	| 12942559 	| 2013 	| 16254186 	| 155342040 	|
-| 2002 	| 50194512.93 	| 12732259 	| 2014 	| 16519514 	| 343120604.2 	|
-| 2003 	| 39891517.58 	| 13010776 	| 2015 	| 17056828 	| 224236103.7 	|
-| 2004 	| 80533584.61 	| 13363802 	| 2016 	| 17523709 	| 115939655.2 	|
-| 2005 	| 71249387.07 	| 13743467 	| 2017 	| 18054660 	| 187090777.7 	|
-| 2006 	| 82232248.09 	| 14379636 	| 2018 	| 18501366 	| 367080297.2 	|
-| 2007 	| 52420787.68 	| 14698305 	| 2019 	| 18544535 	| 324795954.1 	|
-| 2008 	| 121971288.5 	| 14932667 	| 2020 	| 18231131 	| 138957286.2 	|
+```{r, echo=FALSE,fig.cap="Credito Hipotecario trimestral a precios de 2013", fig.pos="H"}
+grafica2e1 <- ggplot()+
+  geom_line(data=datos, aes(x=Fecha,y=CH), color = "#990066")+
+  labs(title = "Credito Hipotecario trimestral a precios de 2013", x="Fecha",y="Crédito Hipotecario")+
+  theme_bw()
+plot(grafica2e1)
+```
+
 
 Como puede verse en la gráfica, el crecimiento del crédito hipotecario es indiscutible. Esto se debe, como mencionamos al principio de este ejercicio, al crecimiento económico, a la penetración financiera y al crecimiento poblacional, entre otras cosas. Determinar con mayor precisión los determinantes del crecimiento del crédito hipotecario demandaría un análisis econométrico que excede el alcance de este ejercicio. 
 
-\newpage
+
 
 La variable que estudiaremos en este inciso está definida como sigue: 
 $$
 Crédito _{hipotecario_{t}}=(\frac{Crédito_{t}}{PIB_{t}})*100
 $$
-donde $t\in(1994,2021)$. 
+donde $t\in(2004,2021)$. 
 
 En la siguiente gráfica se muestra la proporción del crédito hipotecario en el PIB real de México para los años 1994-2021. 
 
-```{r d2, echo=FALSE,fig.width=10,fig.height=12}
-## Generamos las time series de las variables
-#y<-credito.hipotecario[,2]
-#c<-credito.hipotecario[,3]
-#c_inpc<-credito.hipotecario[,8]
-#c_ipp<-credito.hipotecario[-c(1:7),13]
-## Generamos las time series de 1997 a 2020
-#ty<-ts(y,start=1997,end=2020,frequency=1)
-#tc<-ts(c,start=1997,end=2020,frequency=1)
-#tsc_inpc<-ts(c_inpc,start=1997,end=2020,frequency=1)
-#tsc_ipp<-ts(c_ipp,start=2003,end=2020,frequency=1)
-## Generamos la variable como proporción del PIB
-# Para la hipoteca en términos nominales
-#p_c<-(c/y)*100
-#tp_c<-ts(p_c,start=1997,end=2020,frequency=1)
-# Para la hipoteca en términos reales con INPC
-#p_c_inpc<-(c_inpc/y)*100
-#p_c_inpc2<-credito.hipotecario[,9]
-#tsc2<-ts(p_c_inpc2,start=1997,end=2020,frequency=1)
-#tp_c_inpc<-ts(p_c,start=1997,end=2020,frequency=1)
-# Para la hipoteca en términos reales con IPP
-#p_c_ipp<-credito.hipotecario[-c(1:7),14]
-#tp_c_ipp<-ts(p_c_ipp,start=2003,end=2020,frequency=1)
-## Graficamos las 3 series
-#par(mfrow=c(4,1))
-#ts.plot(ty,main="PIB real",ylab="Y",xlab="t")
-#ts.plot(tp_c,main="Proporción de crédito hipotecario nominal",ylab="Crédito",xlab="t")
-#ts.plot(tsc2, main="Proporción de crédito deflactado con INPC",ylab="p_c",xlab="t")
-#ts.plot(tp_c_ipp, main="Proporción de crédito deflactado con IPP",ylab="p_c",xlab="t")
-
+```{r, echo=FALSE,fig.cap="Proporción del Credito Hipotecario trimestral a precios de 2013 respecto al PIB", fig.pos="H"}
+grafica2e2 <- ggplot()+
+  geom_line(data=datos, aes(x=Fecha,y=pCH), color = "#990066")+
+  labs(title = "Proporción del Credito Hipotecario trimestral a precios de 2013 respecto al PIB", x="Fecha",y="Crédito Hipotecario")+
+  theme_bw()
+plot(grafica2e2)
 ```
 
-Nótese lo siguiente: 
-\begin{enumerate}
-\item{} En la gráfica 1: la tendencia del PIB real a precios de 2013 es claramente creciente, con fluctuaciones poco variables y solamente con una caída que se sostiene por más de 4 trimestres en el año 2019-2020 en parte por el efecto de la Presidencia de Andrés Manuel López Obrador y por la crisis asociada a la pandemia por COVID-19. 
-\item{} En la gráfica 2: la tendencia del crédito hipotecario es también creciente. Recordemos que esta tendencia del crédito hipotecario tiene el efecto de la inflación por lo que es importante las gráficas 3 y 4. 
-\item{} En la gráfica 3: la tendencia del crédito hipotecario real como proporción del PIB real es también creciente. De hecho, notemos que tiene un papel fundamentalmente procíclico y que el crecimiento de la participación sobre el PIB real del crédito hipotecario durante la coyuntura de los años 2019-2021 se debe a la caída en términos reales del PIB real. Notemos que el crédito hipotecario durante esa coyuntura no disminuyó y tal vez, incluso, aumentó. Notemos que esta proporción está dada por el cociente entre el PIB real a precios 2013 y el crédito hipotecario a precios 2013, deflactado con el INPC. 
-\item{} En la gráfica 4: la tendencia del crédito hipotecario real como proporción del PIB real es creciente. Nótese que los valores fluctúan entre el 0.3 y el 0.12, por lo que el hecho de elegir cualesquiera de los dos deflactores, en este último caso el IPP, no es de mayor relevancia dado que la clara tendencia creciente del crédito hipotecario como proporción del PIB es evidente. 
-\end{enumerate}
 
+La tendencia del crédito hipotecario real como proporción del PIB real es creciente. Nótese que los valores fluctúan entre el 1.3% y el 4.5%, lo cual nos muestra una gran crecimiento hasta el primer trimestre del 2021. 
 Es posible hacer un análisis un poco más desagregado para conocer la naturaleza del crédito hipotecario en México durante el periodo de estudio. El crédito hipotecario puede dividirse como se muestra a continuación. 
-
-\begin{enumerate}
-\item{} Crédito hipotecario bancario: Contabiliza el crédito a la vivienda otorgado por la banca comercial dentro del país. 
-\item{} Crédito hipotecario no bancario: Contabiliza el crédito a la vivienda otorgado por instituciones no financieras o bancarias dentro del país. 
-\end{enumerate}
-
-Notemos que es importante esta distinción por dos cosas a saber: i. El indicador de crédito es un indicador clave para entender y buscar explicar el comportamiento volátil de los mercados financieros y, por ende, de las *potenciales* crisis financieras, y ii. Porque las burbujas financieras se han generado o pueden generarse, fácilmente, en los mercados inmobiliarios y de hipotecas. Por ello es relevante esta desagregación para el análisis. 
-```{r d3, echo=FALSE,fig.width=12,fig.height=9}
-## Cargamos la base de datos
-#bancario <- read.csv("C:/Users/elam_/OneDrive - El Colegio de México A.C/Maestría en Economía - 2021-2023/Maestría en Economía - Colmex/Segundo Semestre Maestría/Macroeconomía/Tareas/Tarea 4/bancario y no bancario.csv")
-## Tomamos las nuevas dos variables
-#pc_bancario<-bancario[,1]
-#pc_no_bancario<-bancario[,2]
-## Generamos la time series
-#tpc_bancario<-ts(pc_bancario,start=1997,end=2021,frequency = 4)
-#tpc_no_bancario<-ts(pc_no_bancario,start=1997,end=2021,frequency=4)
-## Graficamos las series
-#par(mfrow=c(2,1))
-#ts.plot(tpc_bancario,main="Bancario",ylab="Crédito",xlab="t",type="l")
-#ts.plot(tpc_no_bancario,main="No bancario",ylab="Crédito",xlab="t",type="l")
-
-```
-Notemos que la participación relativa del crédito bancario en el crédito hipotecario ha perdido ciertos puntos porcentuales a partir de 2005, y se ha mantenido sobre un valor menor al 40 por ciento en el resto de la serie. Por otro lado, el crédito hipotecario no bancario ha ganado puntos porcentuales en su participación relativa y se ha mantenido alrededor del 60 por ciento en el resto de la serie. 
-
-Lo interesante de este análisis es decir, por tanto, lo siguiente: el crédito hipotecario en México, para el periodo 1994-2021, ha aumentado su participación relativa en términos del PIB real, y al menos en un 60 por ciento la proporción es de crédito hipotecario no bancario. 
+Lo interesante de este análisis es decir, por tanto, lo siguiente: el crédito hipotecario en México, para el periodo 2004-2021, ha aumentado su participación relativa en términos del PIB real.
 
 
 
