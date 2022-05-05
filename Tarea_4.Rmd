@@ -164,8 +164,7 @@ $$
 -\int_{- \infty}^{\infty} c \mathrm{e}^{2 g c} \mathrm{~d} c = \frac{\mathrm{e}^{2 g c}}{4 g^{2}}-\frac{c \mathrm{e}^{2 g c}}{2 g}
 $$
 El problema está resuelto:
-$$ 
-\int_{- \infty}^{\infty}-c \mathrm{e}^{2 g c} \mathrm{~d} c =\frac{\mathrm{e}^{2 g c}}{4 g^{2}}-\frac{c \mathrm{e}^{2 g c}}{2 g}+C
+$$ \int_{- \infty}^{\infty}-c \mathrm{e}^{2 g c} \mathrm{~d} c =\frac{\mathrm{e}^{2 g c}}{4 g^{2}}-\frac{c \mathrm{e}^{2 g c}}{2 g}+C
 $$
 
 Reescribiendo:
@@ -198,7 +197,7 @@ pacman::p_load(tidyverse,
                cowplot, ggplot2, scales, viridis, latticeExtra,
                knitr, tinytex, reshape, lubridate, scales, reshape2, seasonal, plm, latex2exp, tibble,Hmisc, zoo,
                dynlm, magrittr, stargazer,xtable,
-               rsq, MASS,jtools, plm, readr, gridExtra)
+               rsq, MASS,jtools, plm, readr)
 
 
 
@@ -241,7 +240,7 @@ Para este ejercicio tomamos las fuentes financiamiento de la Banca Comercial res
 
 La información primero se presenta en términos nominales, tal como lo pide el ejercicio. Es importante resaltar que esta evolución en el tiempo no nos explica realmente cuál ha sido el comportamiento del financiamiento debido a que esta medida incluye la inflación. 
 
-```{r 2a, fig.cap="Valor de los Pasivos en niveles", fig.pos="H"}
+```{r, fig.cap="Valor de los Pasivos en niveles", fig.pos="H"}
 base2 <- read.csv("Activos_Pasivos.csv")
 Pasivos <- base2 %>% filter(!row_number() %in% c(1:8)) %>% 
   dplyr::select(1,19,20,36,43,47, 48) %>% 
@@ -253,141 +252,57 @@ Pasivos$Fecha <- as.yearmon(Pasivos$Fecha, "%d/%m/%Y")
 Pasivos %>% dplyr::select(Fecha, D, E, f, G, H) %>% gather(variable, value, D:H) %>% ggplot(aes(x= Fecha, y = value, fill= variable))+ geom_area()+theme_bw() +labs(title = "Valor de los Pasivos en niveles", x="Año",y='Valor', 
         colour = " ")
 ```
-Nótese que la tendencia de las 4 fuentes de financiamiento a la banca comercial en México es creciente en toda la serie. La serie que tiene mayor variación es el financiamiento externo, y notemos que los últimos años tiene una tendencia decreciente. 
+Podemos ver la misma información representada como proporción del total, lo cual nos da una mejor perspectiva del tipo de pasivo que es más importante para el financiamiento de la banca privada.
 
-Para realizar un análisis que nos pueda otorgar mayor información, calculamos la proporción que cada rubro representa del financiamiento total a la banca comercial en México. Esta medida de participación se define como sigue:
-$$
-Proporción_{it}=(\frac{Rubro_{it}}{Total_{it}})*100
-$$
-donde $t$ representa el tiempo, las 153 observaciones, que abarca del mes de julio de 2009 al mes de marzo de 2022,
-$$
-t\in(7.2009, 4.2022)
-$$
-y donde i es el rubro de que se trate
-$$
-i\in(D,E,F,G, H)
-$$
 
-```{r 2a2, fig.cap="Proporción del total de los Pasivos", fig.pos="H"}
+```{r, fig.cap="Proporción del total de los Pasivos", fig.pos="H"}
 Pasivos %>% dplyr::select(Fecha, pD, pE, pF, pG, pH) %>% gather(variable, value, pD:pH) %>% ggplot(aes(x= Fecha, y = value, fill= variable))+ geom_area()+theme_bw() +labs(title = "Proporción del total de los Pasivos", x="Año",y='Valor', colour = " ")
 
 ```
-Nótese, además, que la fuente de financiamiento más relevante para la banca comercial mexicana es D: Captación, que son los depósitos, mientras que el financiamiento externo y el reporto han tenido una pérdida relativa en importancia en el financiamiento. En la siguiente tabla se especifican los promedios para todo el periodo de cada una de las variables.
-
-```{r 2a3, echo=FALSE}
-p_mean <- summarize_all(Pasivos[,c(8:12)], mean)
-knitr::kable(p_mean,booktabs = TRUE, format = 'latex', caption = "Media de la proporción de Pasivos", longtable = F)%>% 
-  kable_styling(latex_options = "HOLD_position")
-
-```
-
-
-Es decir, el valor de H es mayor, incluso, que el valor de F y G. Esto indica que distintas fuentes de financiamiento han tenido una relevancia relativa creciente. 
 
 
 ### b)
 Obtenga de la misma fuente información del tipo de créditos que el sistema bancario (comercial) mexicano otorga, y haga gráficas describiendo la evolución en el tiempo de distintos tipos de crédito y de la proporción que cada uno representa del total. Al igual que en el inciso anterior, hay que producir dos gráficas de series de tiempo en la que el valor total está constituido por varias partes intermedias.
 
 
-```{r 2b1, fig.cap="Valor de los Activos en niveles", fig.pos="H"}
+```{r, fig.cap="Créditos del sistema bancario mexicano en indices", fig.pos="H"}
 ##Cargamos la base de datos y empezamos el filtrado
-Activos <- base2 %>% filter(!row_number() %in% c(1:8)) %>% 
+Activos <- read.csv("Activos.csv", header =TRUE)
+Activos <- Activos %>% filter(!row_number() %in% c(1:8)) %>% 
   dplyr::select(1:3,8,9)%>%
-  setNames(.,c("Fecha", "Total", "A", "B", "C")) %>% 
-  mutate(Total=as.numeric(Total),A=as.numeric(A),B=as.numeric(B),C=as.numeric(C)) %>%
-  mutate(pA=A/Total*100,pB=B/Total*100,pC=C/Total*100)
+  setNames(.,c("Fecha", "Total", "A", "B", "C"))
+Activos$B <- na_if(Activos$B, "N/E")   
 Activos$Fecha <- as.yearmon(Activos$Fecha, "%d/%m/%Y")
+df_A <- Activos %>%  mutate(Total = as.numeric(Total)/as.numeric(Total[60])*100, A = as.numeric(A)/as.numeric(A[60])*100, B = as.numeric(B)/as.numeric(B[60])*100, C=as.numeric(C)/as.numeric(C[60])*100)
 
-Activos %>% dplyr::select(Fecha, A, B, C) %>% gather(variable, value, A:C) %>% ggplot(aes(x= Fecha, y = value, fill= variable))+ geom_area()+theme_bw() +labs(title = "Valor de los Activos en niveles", x="Año",y='Valor', 
-        colour = " ")
+mdf_A <- melt(df_A, id.vars = "Fecha")
+  
+plot_2b1 <- ggplot(mdf_A, aes(x=Fecha, y=value ,colour=variable,group=variable))+
+  geom_line() + 
+  labs(title = "Créditos del sistema bancario mexicano en indices", x="Año",y='Valor', 
+        colour = " ") + theme_bw() +  theme(text=element_text(size=12,  family="serif"))
+plot(plot_2b1)
 ```
 
-```{r, fig.cap="Proporción del total de los Activos", fig.pos="H"}
+```{r, fig.cap="Proporción del total de los activos", fig.pos="H"}
 ##Calculamos las tasas de crecimiento
-Activos %>% dplyr::select(Fecha, pA, pB, pC) %>% gather(variable, value, pA:pC) %>% ggplot(aes(x= Fecha, y = value, fill= variable))+ geom_area()+theme_bw() +labs(title = "Proporción del total de los Activos", x="Año",y='Valor', 
-        colour = " ")
+df_pA <- Activos %>% mutate(PA= as.numeric(A)/as.numeric(Total)*100, PB = as.numeric(B)/as.numeric(Total)*100, PC = as.numeric(C)/as.numeric(Total)*100) %>% 
+  dplyr::select(1,6:8)
+mdf_pA <- melt(df_pA, id.vars = "Fecha")
+  
+plot_2b2 <- ggplot(mdf_pA, aes(x=Fecha, y=value ,colour=variable,group=variable))+
+  geom_line() + 
+  labs(title = "Proporción del total de los activos", x="Año",y='Valor', 
+        colour = " ") + theme_bw() +  theme(text=element_text(size=12,  family="serif"))
+plot(plot_2b2)
+# limpia la pantalla de tablas o basura de un ejercicio anterior
+rm(list = ls())
 ```
-Utilizando la misma base de datos que en el inciso anterior podemos notar que la mayor parte de los activos que posee la banca privada en el país proviene de los créditos y la emisión de valores.
-
-
-Podemos desagregar más como vienen compuestos los créditos que otorga el sector bancario utilizando otra serie encontrada en el SIE [^4].
-
-[^4]: Esta información se recuperó de la siguiente liga electrónica: https://www.banxico.org.mx/SieInternet/consultarDirectorioInternetAction.do?sector=19&accion=consultarCuadro&idCuadro=CF835 consultado en 02/05/2022, 18:00.
-
-De la cual usaremos el desglose de cartera vigente por destino del crédito, el cual corresponde la letra B y lo analizaremos de la siguiente manera:
-\begin{enumerate}
-\item{} B: Cartera vigente total por destino del crédito
-\begin{enumerate}
-\item{} B.1: Consumo
-\item{} B.2: Vivienda
-\item{} B.3: Empresas y personas físicas con actividad empresarial
-\end{enumerate}
-\end{enumerate}
-
-```{r, echo=FALSE, fig.cap="Cartera vigente total por destino del crédito", fig.pos="H"}
-Credito <- read.csv("Credito.csv")
-
-Credito <- Credito %>% filter(!row_number() %in% c(1:8)) %>% 
-  dplyr::select(1,9, 10,18,21)%>%
-  setNames(.,c("Fecha", "Total", "B1", "B2", "B3")) %>% 
-  mutate(Total=as.numeric(Total),B1=as.numeric(B1),B2=as.numeric(B2),B3=as.numeric(B3)) %>%
-  mutate(pB1=B1/Total*100,pB2=B2/Total*100,pB3=B3/Total*100)
-Credito$Fecha <- as.yearmon(Credito$Fecha, "%d/%m/%Y")
-Credito %>% dplyr::select(Fecha, B1, B2, B3) %>% gather(variable, value, B1:B3) %>% ggplot(aes(x= Fecha, y = value, fill= variable))+ geom_area()+theme_bw() +labs(title = "Cartera vigente total por destino del crédito", x="Año",y='Valor', colour = " ")
-
-```
-Esta gráfica de igual manera podemos verla como una proporción, pero ya podemos notar que la mayor parte del crédito está concentrado a las empresas.
-
-```{r, echo=FALSE,  fig.cap="Proporción de cartera vigente total por destino del crédito", fig.pos="H"}
-Credito %>% dplyr::select(Fecha, pB1, pB2, pB3) %>% gather(variable, value, pB1:pB3) %>% ggplot(aes(x= Fecha, y = value, fill= variable))+ geom_area()+theme_bw() +labs(title = "Proporción de cartera vigente total por destino del crédito", x="Año",y='Valor', colour = " ")
-```
-En las proporciones podemos apreciar que en entre 2005 y 2010 el crédito al consumo creció en proporción, mientras que el crédito a la vivienda y a las empresas disminuyo, esto probablemente este ligado a la crisis financiera del 2008, los agentes necesitaron suavizar su consumo para el periodo ante la crisis.
-
-### c)
-Del inciso a) de este ejercicio podemos retomar la base de datos y podemos reordenarla dividiendo la captación en inmediata y a plazos, mientras que agrupamos los financiamientos internos y externos juntos. Mientras que para se obtuvo información estadística publicada por el SIE para los plazos del crédito[^5].
-
-[^5]: Esta información se recuperó de la siguiente liga electrónica: https://www.banxico.org.mx/SieInternet/consultarDirectorioInternetAction.do?sector=7&accion=consultarCuadroAnalitico&idCuadro=CA209&locale=es consultado en 02/05/2022, 18:00.
-
-```{r, echo=FALSE, fig.cap="Captación y Credito con plazos en niveles", fig.pos="H"}
-Pasivos2 <- base2 %>% filter(!row_number() %in% c(1:8)) %>%
-  dplyr::select(1,19, 22, 23, 25,26,28,29,31,32,34,35,36,43,47, 48) %>% 
-  setNames(., c("Fecha", "Total", "I1", "P1", "I2", "P2", "I3", "P3", "I4", "P4", "I5", "P5","E", "f", "G", "H")) %>% 
-  mutate(Total=as.numeric(Total), Captacion_inmediata=as.numeric(I1)+as.numeric(I2)+as.numeric(I3)+as.numeric(I4)+as.numeric(I5), Captacion_plazos=as.numeric(P1)+as.numeric(P2)+as.numeric(P3)+as.numeric(P4)+as.numeric(P5), financiamiento_mercado=as.numeric(f)+as.numeric(G), otros=as.numeric(E)+as.numeric(H)) %>% 
-  dplyr::select(1,2,17:20) %>% 
-  mutate(pCaptacion_inmediata=Captacion_inmediata/Total*100, pCaptacion_plazos=Captacion_plazos/Total*100, pfinanciamiento_mercado=financiamiento_mercado/Total*100, potros=otros/Total*100)
-Pasivos2$Fecha <- as.yearmon(Pasivos2$Fecha, "%d/%m/%Y")
-
-ghpasivos <- Pasivos2 %>% dplyr::select(Fecha, Captacion_inmediata, Captacion_plazos, financiamiento_mercado, otros) %>% gather(variable, value, Captacion_inmediata:otros) %>% ggplot(aes(x= Fecha, y = value, fill= variable))+ geom_area()+theme_bw() +theme(legend.key.height= unit(.2, 'cm'), legend.key.width= unit(.4, 'cm'),legend.text = element_text(size=7), axis.title.x=element_blank(),axis.title.y=element_blank())
-
-
-credito2 <- read.csv("plazocredito.csv") 
-credito2 <- credito2 %>% filter(!row_number() %in% c(1:8)) %>%
-  dplyr::select(1,306,307) %>% 
-  setNames(., c("Fecha", "credito_corto", "credito_largo_plazo")) %>% 
-  mutate(credito_corto= as.numeric(credito_corto),credito_largo_plazo= as.numeric(credito_largo_plazo) ,Total=credito_corto+credito_largo_plazo) %>% 
-  mutate(pcredito_corto=credito_corto/Total*100,pcredito_largo_plazo=credito_largo_plazo/Total*100)
-credito2$Fecha <- as.yearmon(credito2$Fecha, "%d/%m/%Y")
-
-ghcreditos <- credito2 %>% dplyr::select(Fecha, credito_corto, credito_largo_plazo) %>% gather(variable, value, credito_corto:credito_largo_plazo) %>% ggplot(aes(x= Fecha, y = value, fill= variable))+ geom_area()+theme_bw()+theme(legend.key.height= unit(.2, 'cm'), legend.key.width= unit(.4, 'cm'), axis.title.y=element_blank() )
-
-grid.arrange(ghpasivos, ghcreditos,ncol=1, nrow = 2, top = "Captación y Credito con plazos en niveles") 
-```
-
-```{r, echo=FALSE,fig.cap="Proporcion Captación y Credito con plazos", fig.pos="H"}
-ghpasivos2 <- Pasivos2 %>% dplyr::select(Fecha, pCaptacion_inmediata, pCaptacion_plazos, pfinanciamiento_mercado, potros) %>% gather(variable, value, pCaptacion_inmediata:potros) %>% ggplot(aes(x= Fecha, y = value, fill= variable))+ geom_area()+theme_bw() +theme(legend.key.height= unit(.2, 'cm'), legend.key.width= unit(.4, 'cm'),legend.text = element_text(size=7), axis.title.x=element_blank(),axis.title.y=element_blank())
-
-ghcreditos2 <- credito2 %>% dplyr::select(Fecha, pcredito_corto, pcredito_largo_plazo) %>% gather(variable, value, pcredito_corto:pcredito_largo_plazo) %>% ggplot(aes(x= Fecha, y = value, fill= variable))+ geom_area()+theme_bw() +theme_bw()+theme(legend.key.height= unit(.2, 'cm'), legend.key.width= unit(.4, 'cm'), axis.title.y=element_blank() )
-
-grid.arrange(ghpasivos2, ghcreditos2,ncol=1, nrow = 2, top = "Proporcion Captación y Credito con plazos") 
-```
-
-### d)
-
-### e)
+## d)
 ## A propósito, documente el incremento dramático a lo largo del tiempo en el crédito hipotecario como proporción del PIB. 
 ```{r d 1,include=FALSE}
 ## Cargamos la base de datos: 
-##credito.hipotecario <- read.csv("credito_hipotecario.csv")
+credito.hipotecario <- read.csv("credito hipotecario.csv")
 ```
 
 Una de las consecuencias de la penetración financiera y del crecimiento demográfico es el crecimiento del crédito en general, tanto el crédito al consumo como el crédito hipotecario o a la vivienda. En general, la tendencia que se esperaría es creciente en términos reales para el crédito, y también, como porcentaje del PIB. 
@@ -398,9 +313,9 @@ Para analizar este inciso, se utilizaron las siguientes series:
 \item{} Serie de crédito hipotecario trimestral 
 \end{enumerate}
 
-Notemos que la serie de crédito hipotecario está dada en términos nominales, por lo que tuvimos que deflactarla con el INPC, el cual fue obtenido directamente de INEGI.  Como lo que nos interesa ver en este ejercicio es cómo ha variado en proporción respecto al PIB real, entonces también el numerador tiene que estar en términos reales, es decir, descontando la inflación [^6]. 
+Notemos que la serie de crédito hipotecario está dada en términos nominales, por lo que tuvimos que deflactarla con el INPC, el cual fue obtenido directamente de INEGI.  Como lo que nos interesa ver en este ejercicio es cómo ha variado en proporción respecto al PIB real, entonces también el numerador tiene que estar en términos reales, es decir, descontando la inflación [^1]. 
 
-[^6]: El PIB se obtuvo de la siguiente liga electrónica: https://www.inegi.org.mx/temas/pib/#Tabulados, consultado en 3/5/2022, 1:17. La fuente para el crédito hipotecario se obtuvo de la siguiente liga electrónica: https://www.banxico.org.mx/SieInternet/consultarDirectorioInternetAction.do?sector=19&accion=consultarCuadro&idCuadro=CF88&locale=es, consultado en 3/5/2022, 1:18. El INPC y el IPP se obtuvieron de la siguiente liga: https://www.inegi.org.mx/app/indicesdeprecios, consultado en 4/5/2022, 14:30. 
+[^1]: El PIB se obtuvo de la siguiente liga electrónica: https://www.inegi.org.mx/temas/pib/#Tabulados, consultado en 3/5/2022, 1:17. La fuente para el crédito hipotecario se obtuvo de la siguiente liga electrónica: https://www.banxico.org.mx/SieInternet/consultarDirectorioInternetAction.do?sector=19&accion=consultarCuadro&idCuadro=CF88&locale=es, consultado en 3/5/2022, 1:18. El INPC y el IPP se obtuvieron de la siguiente liga: https://www.inegi.org.mx/app/indicesdeprecios, consultado en 4/5/2022, 14:30. 
 
 En el siguiente cuadro se observan las primeras observaciones para la serie de tiempo de ambas variables sujetas a análisis. La variable $PIB$ real está a precios de 2013 y en miles de millones mientras que la variable $Crédito Hipotecario$ en millones a precios de 2013 también. 
 
@@ -435,33 +350,33 @@ En la siguiente gráfica se muestra la proporción del crédito hipotecario en e
 
 ```{r d2, echo=FALSE,fig.width=10,fig.height=12}
 ## Generamos las time series de las variables
-#y<-credito.hipotecario[,2]
-#c<-credito.hipotecario[,3]
-#c_inpc<-credito.hipotecario[,8]
-#c_ipp<-credito.hipotecario[-c(1:7),13]
+y<-credito.hipotecario[,2]
+c<-credito.hipotecario[,3]
+c_inpc<-credito.hipotecario[,8]
+c_ipp<-credito.hipotecario[-c(1:7),13]
 ## Generamos las time series de 1997 a 2020
-#ty<-ts(y,start=1997,end=2020,frequency=1)
-#tc<-ts(c,start=1997,end=2020,frequency=1)
-#tsc_inpc<-ts(c_inpc,start=1997,end=2020,frequency=1)
-#tsc_ipp<-ts(c_ipp,start=2003,end=2020,frequency=1)
+ty<-ts(y,start=1997,end=2020,frequency=1)
+tc<-ts(c,start=1997,end=2020,frequency=1)
+tsc_inpc<-ts(c_inpc,start=1997,end=2020,frequency=1)
+tsc_ipp<-ts(c_ipp,start=2003,end=2020,frequency=1)
 ## Generamos la variable como proporción del PIB
 # Para la hipoteca en términos nominales
-#p_c<-(c/y)*100
-#tp_c<-ts(p_c,start=1997,end=2020,frequency=1)
+p_c<-(c/y)*100
+tp_c<-ts(p_c,start=1997,end=2020,frequency=1)
 # Para la hipoteca en términos reales con INPC
-#p_c_inpc<-(c_inpc/y)*100
-#p_c_inpc2<-credito.hipotecario[,9]
-#tsc2<-ts(p_c_inpc2,start=1997,end=2020,frequency=1)
-#tp_c_inpc<-ts(p_c,start=1997,end=2020,frequency=1)
+p_c_inpc<-(c_inpc/y)*100
+p_c_inpc2<-credito.hipotecario[,9]
+tsc2<-ts(p_c_inpc2,start=1997,end=2020,frequency=1)
+tp_c_inpc<-ts(p_c,start=1997,end=2020,frequency=1)
 # Para la hipoteca en términos reales con IPP
-#p_c_ipp<-credito.hipotecario[-c(1:7),14]
-#tp_c_ipp<-ts(p_c_ipp,start=2003,end=2020,frequency=1)
+p_c_ipp<-credito.hipotecario[-c(1:7),14]
+tp_c_ipp<-ts(p_c_ipp,start=2003,end=2020,frequency=1)
 ## Graficamos las 3 series
-#par(mfrow=c(4,1))
-#ts.plot(ty,main="PIB real",ylab="Y",xlab="t")
-#ts.plot(tp_c,main="Proporción de crédito hipotecario nominal",ylab="Crédito",xlab="t")
-#ts.plot(tsc2, main="Proporción de crédito deflactado con INPC",ylab="p_c",xlab="t")
-#ts.plot(tp_c_ipp, main="Proporción de crédito deflactado con IPP",ylab="p_c",xlab="t")
+par(mfrow=c(4,1))
+ts.plot(ty,main="PIB real",ylab="Y",xlab="t")
+ts.plot(tp_c,main="Proporción de crédito hipotecario nominal",ylab="Crédito",xlab="t")
+ts.plot(tsc2, main="Proporción de crédito deflactado con INPC",ylab="p_c",xlab="t")
+ts.plot(tp_c_ipp, main="Proporción de crédito deflactado con IPP",ylab="p_c",xlab="t")
 
 ```
 
@@ -483,17 +398,17 @@ Es posible hacer un análisis un poco más desagregado para conocer la naturalez
 Notemos que es importante esta distinción por dos cosas a saber: i. El indicador de crédito es un indicador clave para entender y buscar explicar el comportamiento volátil de los mercados financieros y, por ende, de las *potenciales* crisis financieras, y ii. Porque las burbujas financieras se han generado o pueden generarse, fácilmente, en los mercados inmobiliarios y de hipotecas. Por ello es relevante esta desagregación para el análisis. 
 ```{r d3, echo=FALSE,fig.width=12,fig.height=9}
 ## Cargamos la base de datos
-#bancario <- read.csv("C:/Users/elam_/OneDrive - El Colegio de México A.C/Maestría en Economía - 2021-2023/Maestría en Economía - Colmex/Segundo Semestre Maestría/Macroeconomía/Tareas/Tarea 4/bancario y no bancario.csv")
+bancario <- read.csv("bancario y no bancario.csv")
 ## Tomamos las nuevas dos variables
-#pc_bancario<-bancario[,1]
-#pc_no_bancario<-bancario[,2]
+pc_bancario<-bancario[,1]
+pc_no_bancario<-bancario[,2]
 ## Generamos la time series
-#tpc_bancario<-ts(pc_bancario,start=1997,end=2021,frequency = 4)
-#tpc_no_bancario<-ts(pc_no_bancario,start=1997,end=2021,frequency=4)
+tpc_bancario<-ts(pc_bancario,start=1997,end=2021,frequency = 4)
+tpc_no_bancario<-ts(pc_no_bancario,start=1997,end=2021,frequency=4)
 ## Graficamos las series
-#par(mfrow=c(2,1))
-#ts.plot(tpc_bancario,main="Bancario",ylab="Crédito",xlab="t",type="l")
-#ts.plot(tpc_no_bancario,main="No bancario",ylab="Crédito",xlab="t",type="l")
+par(mfrow=c(2,1))
+ts.plot(tpc_bancario,main="Bancario",ylab="Crédito",xlab="t",type="l")
+ts.plot(tpc_no_bancario,main="No bancario",ylab="Crédito",xlab="t",type="l")
 
 ```
 Notemos que la participación relativa del crédito bancario en el crédito hipotecario ha perdido ciertos puntos porcentuales a partir de 2005, y se ha mantenido sobre un valor menor al 40 por ciento en el resto de la serie. Por otro lado, el crédito hipotecario no bancario ha ganado puntos porcentuales en su participación relativa y se ha mantenido alrededor del 60 por ciento en el resto de la serie. 
@@ -501,9 +416,10 @@ Notemos que la participación relativa del crédito bancario en el crédito hipo
 Lo interesante de este análisis es decir, por tanto, lo siguiente: el crédito hipotecario en México, para el periodo 1994-2021, ha aumentado su participación relativa en términos del PIB real, y al menos en un 60 por ciento la proporción es de crédito hipotecario no bancario. 
 
 
-
-
 #  Ejercicio 3
+
+
+
 
 ```{r}
 pacman::p_load(tidyverse,dplyr,foreign,psych,
@@ -517,7 +433,7 @@ pacman::p_load(tidyverse,dplyr,foreign,psych,
                stargazer,
                xtable,
                rsq,
-               wooldridge,MASS, siebanxicor)
+               wooldridge,MASS)
 
 
 options(knitr.kable.NA = "-")
