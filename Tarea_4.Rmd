@@ -659,7 +659,6 @@ En primer lugar observamos la evolución histórica de la deuda total emitida po
 La Figura \ref{graf1} muestra las series de la deuda de instituciones no financieras, Privadas en millones de pesos, comparando el largo y corto plazo.
 
 
-
 ```{r No Financieras Privadas}
 
 #Leeer el archivo de los datos de Valores en circulación y guardarlo en B1
@@ -719,20 +718,16 @@ La Figura \ref{graf2} muestra las tasas de crecimiento  de la deuda del sector p
 
 
 ```{r No Financieras  crecimiento }
-  B1 <- read_xlsx("Valores en circulacion.xlsx")
-  Nombres<- B1 [11,]
-  colnames(B1) <- Nombres
-  B1 <- B1[-c(1:28),]
-  B1$Fecha= as.Date(as.numeric(B1$Fecha)-2, origin="1900-01-01")
- # firltrar la basse de datos B1, de acuerdo a las seriers requeridas. SF110356,SF110357,SF223292,SF223293
-  B1<- B1%>%
-dplyr::select(Fecha,SF110356,SF110357,SF223292,SF223293, SF110374,SF110355 )
-
-  B1$SF110356<- as.numeric(B1$SF110356) #Poner los datos en formato de numero 
+   B1$SF110356<- as.numeric(B1$SF110356) #Poner los datos en formato de numero 
    B1$SF110357<- as.numeric(B1$SF110357) #Poner los datos en formato de numero 
   # Componer el vector para tasas de crecimiento en corto y largo plazo.
-B1<- B1 %>% mutate ( Cre_1=(SF110356/lag(SF110356)-1)*100,
-                     Cre_2=(SF110357/lag(SF110357)-1)*100)
+B1<- B1 %>% mutate ( Cre_1=0,#SF110356/lag(SF110356)-1)*100,
+                     Cre_2=0)#(SF110357/lag(SF110357)-1)*100)
+i=2
+for(i in 2:length(B1$Fecha)) {
+ B1$Cre_1[i]=(B1$SF110356[i]/B1$SF110356[i-1]-1)*100
+ B1$Cre_2[i]=(B1$SF110357[i]/B1$SF110357[i-1]-1)*100
+}
 
   fecha<-c(B1$Fecha,B1$Fecha)
   Dato <- c(B1$Cre_1,B1$Cre_2)
@@ -781,9 +776,10 @@ La Figura \ref{graf3} muestra las series de la deuda de instituciones no financi
   B1$SF223292<- as.numeric(B1$SF223292) #Poner los datos en formato de numero 
    B1$SF223293 <- as.numeric(B1$SF223293) #Poner los datos en formato de numero 
   # Componer el vector para graficar En moneda local y  En moneda extranjera 
-B1<- B1 %>% mutate ( Cre_1=(SF223292/lag(SF223292)-1)*100,
-                     Cre_2=(SF223293/lag(SF223293)-1)*100)
-
+  for(i in 2:length(B1$Fecha)) {
+       B1$Cre_1[i]=(B1$SF223292[i]/B1$SF223292[i-1]-1)*100
+       B1$Cre_2[i]=(B1$SF223293[i]/B1$SF223293[i-1]-1)*100
+  }
   fecha<-c(B1$Fecha,B1$Fecha)
   Dato <- c(B1$SF223292,B1$SF223293)
   Moneda <- c(rep("Nacional",length(B1$Fecha)), rep("Extranjera",length(B1$Fecha)))
@@ -974,6 +970,7 @@ B1 <- B1[-c(1:127),]
 ```
 Podemos ver en la Gráfica \ref{graf7} que el ratio sigue un patrón en forma “V” en los últimos 10 años oscilando entre un máximo de $66 \%$ en Enero de 2010 a un mínimo de $50.5 \%$ en Febrero de 2015. A partir de esta fecha la composición de la Emisión de títulos de Deuda de INFP respecto al total ha crecido hasta casi alcanzar nuevamente el máximo en Diciembre de 2021 de $ 69.5 \%).
 La fugura nos  permitió observar que en los últimos 5 años el ratio de la deuda de INFP respecto INFT ha aumentado hasta casi romper el techo de 10 años en Diciembre 2021,  haciendo ligeramente más riesgosa la deuda adquirida por las INFP.
+
 
 
 ### c)
