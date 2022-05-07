@@ -71,7 +71,7 @@ $$
 \Rightarrow \gamma &>1+r
 \end{aligned}
 $$
-* El inversor apoya el pryecto si los rendimientos esperados netos máaximos son al menos sus pagos esperados si el proyecto se realiza.
+* El inversor apoya el proyecto si los rendimientos esperados netos máximos son al menos sus pagos esperados si el proyecto se realiza.
 
 $$
 R^{M A X} \geq(1+r)(1-W)
@@ -98,26 +98,25 @@ $$
 $$
 ¿El contrato entre el inversionista y el empresario está determinado de manera única? Si es asi, ¿cuál es el contrato? Si no, explica por qué.
 
-Sí, está determinado de manera única; recordemos que en el inciso anterior determinamos que la funcón de rendmientos esperados del inversor alcanza su máximo en $2 \gamma f$, porlo que no tiene la forma de las figuras $10.2$ o $10.3$, si no que sería una curva cóncava y estrictamente creciente en el intervalo [0, $2 \gamma f$], y el contrato sería $D$ tal que:
+Sí, está determinado de manera única; recordemos que en el inciso anterior determinamos que la función de rendmientos esperados del inversor alcanza su máximo en $2 \gamma f$, por lo que no tiene la forma de las figuras $10.2$ o $10.3$, si no que sería una curva cóncava y estrictamente creciente en el intervalo [0, $2 \gamma f$], y el contrato sería $D$ tal que:
 $$
 R(D)=(1+r)(1-W)
 $$
-con $R(\cdot)$ la función de rendmientos esperados del inversor
+con $R(\cdot)$ la función de rendmientos esperados del inversor.
 
 #### c)
 
 La capacidad de compromiso limitada conduce a la ineficiencia (en relación con el caso en que no hay fricciones) si $\gamma>1+r$ pero el proyecto no se lleva a cabo. Describa si cada uno de los sigusientes puede hacer que un proyecto con $\gamma>1+r$ no se lleve a cabo:
-1) Una caida en la riqueza del emprendedor, W.
-Si $W$ se redujera afectaria lo estipulado en la condicción del inversor en el inciso a:
+1) Una caída en la riqueza del emprendedor, W.
+Si $W$ se redujera afectaría lo estipulado en la condición del inversor en el inciso a:
 $$
 \gamma f \geq(1+r)(1-W)
 $$
-El termino de la derecha sería mayor y se requeriría que $\gamma$, la producción del proyecto, fuese más grande o que la fracción $f$ que se puede pagar sea mayor, lo que provocaria que el proyecto no se lleve a cabo.
+El término de la derecha sería mayor y se requeriría que $\gamma$, la producción del proyecto, fuese más grande o que la fracción $f$ que se puede pagar fuera mayor, lo que provocaría que el proyecto no se lleve a cabo.
 
 II) Un aumento en la fracción del proyecto que el empresario puede ocultar, 1 - $f$ (es decir, una caúda en $f)$.
 
-Similar a la pregunta anterior, si gamma, $r \mathrm{y}$ se mantuvieran iguales, la condición para que el inversor externo apoye el proyecto:
-podría dejar de cumplirse, ya que el lado izquierdo de la desigualdad disminuiría, por lo que la viabilidad del proyecto estaría en duda.
+Similar a la pregunta anterior, si gamma, $r \mathrm{y}$ se mantuvieran iguales, la condición para que el inversor externo apoye el proyecto podría dejar de cumplirse, ya que el lado izquierdo de la desigualdad disminuiría, por lo que la viabilidad del proyecto estaría en duda.
 
 III) Un aumento en el riesgo idiosincrásico. Concretamente, suponga que, la producción del proyecto se distribuye uniformemente en $[\gamma-b, \gamma+b]$ en lugar de uniformemente en $[0,2 \gamma]$, $y$ hay un aumento en $b$.
 Siguiendo el procedimiento que usamos en el inciso b (usando la ecuación $10.8$ para $D \leq \gamma+b$ ):
@@ -132,7 +131,7 @@ De forma que esta función se maximiza en $D=(\gamma+b) f$, por lo que $R^{M A X
 $$
 \frac{(\gamma+b) f}{2} \geq(1+r)(1-W)
 $$
-Si $b$ aumentara estaríamos en la situación contraria a la del inciso ii, ya que el lado izquierdo de la desigualdad aumentaria y la desigualdad no se rompería, por lo que un aumento de este tipo no debería, en sí mismo, evitar que el proyecto se llevase a cabo.
+Si $b$ aumentara estaríamos en la situación contraria a la del inciso ii, ya que el lado izquierdo de la desigualdad aumentaría y la desigualdad no se rompería, por lo que un aumento de este tipo no debería, en sí mismo, evitar que el proyecto se llevase a cabo.
 
 \newpage
 
@@ -149,7 +148,7 @@ Resolviendo ahora:
 $$
 \int_{- \infty}^{\infty}c \mathrm{e}^{2 g c} \mathrm{~d} c
 $$
-Integra por partes: $\int \mathrm{fg}^{\prime}=\mathrm{fg}-\int \mathrm{f}^{\prime} g \rightarrow \quad \mathrm{f}=c, \quad \mathrm{~g}^{\prime}=\mathrm{e}^{2 g c}$
+Integrar por partes: $\int \mathrm{fg}^{\prime}=\mathrm{fg}-\int \mathrm{f}^{\prime} g \rightarrow \quad \mathrm{f}=c, \quad \mathrm{~g}^{\prime}=\mathrm{e}^{2 g c}$
 
 
 Procedimiento:  
@@ -175,7 +174,7 @@ $$
 =-\frac{(2 g c-1) \mathrm{e}^{2 g c}}{4 g^{2}}+C
 $$
 $$-\dfrac{\left(2gc-1\right)\mathrm{e}^{2g \text c}}{4g^2} \neq \mu$$
-Lo cual indica que la esperanza de dicha distribución es variable y no constante, contrario a lo que se presenta en una distribución normal
+Lo cual indica que la esperanza de dicha distribución es variable y no constante, contrario a lo que se presenta en una distribución normal.
 
 #### b)
 Explique en una oración o dos por qué el análisis del texto, que usa las propiedades de las distribuciones log normales, es correcto.
@@ -188,7 +187,7 @@ $$
 
 Además debemos considerar que $\operatorname{Var}(\log (u(c)))=4 \gamma^{2} w$ y nótese que $\log (u(c))=2 \gamma c \sim \log N$ 
 
-$\therefore$ El analisis del texto es correcto.
+$\therefore$ El análisis del texto es correcto.
 
 \newpage
 
@@ -343,20 +342,20 @@ Credito$Fecha <- as.yearmon(Credito$Fecha, "%d/%m/%Y")
 Credito %>% dplyr::select(Fecha, B1, B2, B3) %>% gather(variable, value, B1:B3) %>% ggplot(aes(x= Fecha, y = value, fill= variable))+ geom_area()+theme_bw() +labs(title = "Cartera vigente total por destino del crédito", x="Año",y='Valor', colour = " ")+scale_fill_brewer(palette="Pastel1")
 
 ```
-Esta gráfica de igual manera podemos verla como una proporción, pero ya podemos notar que la mayor parte del crédito está concentrado a las empresas.
+Esta gráfica podemos verla como una proporción, pero podemos notar que la mayor parte del crédito está concentrada a las empresas.
 
 ```{r, echo=FALSE,  fig.cap="Proporción de cartera vigente total por destino del crédito", fig.pos="H"}
 Credito %>% dplyr::select(Fecha, pB1, pB2, pB3) %>% gather(variable, value, pB1:pB3) %>% ggplot(aes(x= Fecha, y = value, fill= variable))+ geom_area()+theme_bw() +labs(title = "Proporción de cartera vigente total por destino del crédito", x="Año",y='Valor', colour = " ")+scale_fill_brewer(palette="Dark2")
 ```
-En las proporciones podemos apreciar que en entre 2005 y 2010 el crédito al consumo creció en proporción, mientras que el crédito a la vivienda y a las empresas disminuyo, esto probablemente este ligado a la crisis financiera del 2008, los agentes necesitaron suavizar su consumo para el periodo ante la crisis.
+En las proporciones podemos apreciar que en entre 2005 y 2010 el crédito al consumo creció en proporción, mientras que el crédito a la vivienda y a las empresas disminuyó, esto probablemente esté ligado a la crisis financiera del 2008, ya que los agentes necesitaron suavizar su consumo para el periodo ante la crisis.
 
 
 ### c)
 **Explique si los datos son consistentes con la hipótesis de que los bancos hacen transformación de madurez o si no lo son y porqué. Para ello posiblemente tenga que hacer supuestos (razonables) o buscar información adicional acerca de la madurez de los distintos tipos de financiamiento y crédito otorgado.**
 
-Del inciso a) de este ejercicio podemos retomar la base de datos y podemos reordenarla dividiendo la captación en inmediata y a plazos, mientras que agrupamos los financiamientos internos y externos juntos. Mientras que para se obtuvo información estadística publicada por el SIE para los plazos del crédito[^5].
+Del inciso a) de este ejercicio podemos retomar la base de datos y podemos reordenarla dividiendo la captación en inmediata y a plazos, mientras que agrupamos los financiamientos internos y externos juntos. Se obtuvo información estadística publicada por el SIE para los plazos del crédito[^5].
 
-[^5]: Esta información se recuperó de la siguiente liga electrónica: https://www.banxico.org.mx/SieInternet/consultarDirectorioInternetAction.do?sector=7&accion=consultarCuadroAnalitico&idCuadro=CA209&locale=es consultado en 02/05/2022, 18:00.
+[^5]: Esta información se recuperó de la siguiente liga electrónica: https://www.banxico.org.mx/SieInternet/consultarDirectorioInternetAction.do?sector=7&accion=consultarCuadroAnalitico&idCuadro=CA209&locale=es, consultado en 02/05/2022, 18:00.
 
 ```{r, echo=FALSE, fig.cap="Captación y Credito con plazos en niveles", fig.pos="H"}
 Pasivos2 <- base2 %>% filter(!row_number() %in% c(1:8)) %>%
@@ -396,7 +395,7 @@ Se cumple la teoría de maturity mismatch, donde la mayor parte del financiamien
 ### d)
 **Explique qué implica la evolución de las formas de financiamiento y los tipos de crédito otorgados que observó en los incisos anteriores para la estabilidad del sistema financiero a la luz del modelo Diamond-Dybvig.**
 
-La evolución de la captación inmediata, la cual pasa ha ser más del 40% del financiamiento de los bancos, ha subido tanto que podría indicarnos un riesgo bancario creciente dado que los créditos son de largo plazo, incluso estos aumentaron en los últimos años.
+La evolución de la captación inmediata, la cual pasa ha ser de más del 40% del financiamiento de los bancos, ha subido tanto que podría indicarnos un riesgo bancario creciente y dado que los créditos son de largo plazo, incluso estos aumentaron en los últimos años.
 Esto va con lo que nos indica el modelo, donde los bancos son incapaces de satisfacer la demanda de liquidez en caso de una corrida, dado que sus inversiones son de largo plazo, lo cual deja vulnerable al país ante choques financieros.
 El choque se puede dar si existe una interrupción de las otras fuentes de financiamiento diferentes a las de captación, es decir, no solo existe el riesgo de pánico de los consumidores, sino otro problema que genere la deficiencia del la liquidez requerida.
 
@@ -441,13 +440,13 @@ Una de las consecuencias de la penetración financiera y del crecimiento demogr�
 
 Para analizar este inciso, se utilizaron las siguientes series: 
 \begin{enumerate}
-\item{} Serie desestacionalizada del PIB a precios 2013 trimestral
-\item{} Serie de crédito hipotecario mensual, que viene del inciso b) 
+\item{} Serie desestacionalizada del PIB a precios 2013, trimestral
+\item{} Serie de crédito hipotecario trimestral, que viene del inciso b) 
 \end{enumerate}
 
-Notemos que la serie de crédito hipotecario está dada en términos nominales, por lo que tuvimos que deflactarla con el INPP sin petroleo, el cual fue obtenido directamente de INEGI.  Como lo que nos interesa ver en este ejercicio es cómo ha variado en proporción respecto al PIB real, entonces también el numerador tiene que estar en términos reales, es decir, descontando la inflación [^6]. 
+Notemos que la serie de crédito hipotecario está dada en términos nominales, por lo que tuvimos que deflactarla con el INPP sin petróleo, el cual fue obtenido directamente de INEGI.  Como lo que nos interesa ver en este ejercicio es cómo ha variado en proporción respecto al PIB real, entonces también el numerador tiene que estar en términos reales, es decir, descontando la inflación [^6]. 
 
-[^6]: El PIB se obtuvo de la siguiente liga electrónica: https://www.inegi.org.mx/temas/pib/#Tabulados, consultado en 3/5/2022, 1:17. El INPC y el IPP se obtuvieron de la siguiente liga: https://www.inegi.org.mx/app/indicesdeprecios, consultado en 4/5/2022, 14:30. 
+[^6]: El PIB se obtuvo de la siguiente liga electrónica: https://www.inegi.org.mx/temas/pib/#Tabulados, consultado en 3/5/2022, 1:17. El INPC y el INPP se obtuvieron de la siguiente liga: https://www.inegi.org.mx/app/indicesdeprecios, consultado en 4/5/2022, 14:30. 
 
 En la siguiente gráfica se observan las primeras observaciones para la serie de tiempo de ambas variables sujetas a análisis. La variable $PIB$ real está a precios de 2013 y en miles de millones mientras que la variable $Crédito Hipotecario$ en millones a precios de 2013 también. 
 
@@ -469,7 +468,7 @@ La variable que estudiaremos en este inciso está definida como sigue:
 $$
 Crédito _{hipotecario_{t}}=(\frac{Crédito_{t}}{PIB_{t}})*100
 $$
-donde $t\in(2004,2021)$. 
+donde $t\in(1994,2021)$. 
 
 En la siguiente gráfica se muestra la proporción del crédito hipotecario en el PIB real de México para los años 1994-2021. 
 
@@ -482,9 +481,9 @@ plot(grafica2e2)
 ```
 
 
-La tendencia del crédito hipotecario real como proporción del PIB real es creciente. Nótese que los valores fluctúan entre el 1.3% y el 4.5%, lo cual nos muestra una gran crecimiento hasta el primer trimestre del 2021. 
-Es posible hacer un análisis un poco más desagregado para conocer la naturaleza del crédito hipotecario en México durante el periodo de estudio. El crédito hipotecario puede dividirse como se muestra a continuación. 
-Lo interesante de este análisis es decir, por tanto, lo siguiente: el crédito hipotecario en México, para el periodo 2004-2021, ha aumentado su participación relativa en términos del PIB real.
+La tendencia del crédito hipotecario real como proporción del PIB real es creciente. Nótese que los valores fluctúan entre el 1.3% y el 4.5%, lo cual nos muestra un gran crecimiento hasta el primer trimestre del 2021. 
+Es posible hacer un análisis un poco más desagregado para conocer la naturaleza del crédito hipotecario en México durante el periodo de estudio, dividiéndose en crédito bancario y no bancario, sin embargo, consideramos que este análisis también excedería el propósito y alcance de este inciso. 
+Lo interesante de este análisis es decir, por tanto, lo siguiente: el crédito hipotecario en México, para el periodo 1994-2021, ha aumentado su participación relativa en términos del PIB real.
 
 
 \newpage 
@@ -495,7 +494,7 @@ Lo interesante de este análisis es decir, por tanto, lo siguiente: el crédito 
 ### a)
 **Utilice datos del SIE/Valores en Circulación y de SIE/Finanzas públicas del Banco de México para describir la evolución a lo largo del tiempo de la composición de la deuda del gobierno mexicano por tipo de instrumento, madurez y moneda. Señale la implicación de lo que encuentre para el riesgo de impago.**
 
-En primer lugar se clasifica la deuda pública en interna y externa, la deuda externa está, en general, denominada en moneda extranjera, la deuda interna está denominada en su mayoría en moneda local. La deuda interna y externa puede clasificarse como de corto (menor a un año) y de largo plazo (mayor a un año). Del SIE Banxico/Balanza de Pagos puede obtenerse información acerca de la deuda externa y su madurez.
+En primer lugar se clasifica la deuda pública en interna y externa. La deuda externa está, en general, denominada en moneda extranjera mientras que la deuda interna está denominada en su mayoría en moneda local. La deuda interna y externa pueden clasificarse como de corto (menor a un año) y de largo plazo (mayor a un año). Del SIE Banxico/Balanza de Pagos puede obtenerse información acerca de la deuda externa y su madurez.
 
 ```{r echo=FALSE}
 #Este código permite la descarga directa de la series del SIE BANXICO
@@ -523,11 +522,11 @@ plot.1 <- autoplot(ts.dexterna[,2:3]) +
 plot.1
 ```
 
-Se observa que la deuda en moneda extranjera a largo plazo presentó un comportamiento ascendente desde el inicio de la serie en 2009, estabilizandose a partir de 2016. El ascenso inicial puede explicarse por la etapa de bajas tasas de interés externas posterior a la crisis financiera de 2008-2009. La deuda externa a corto plazo es menor que la de largo plazo durante todo el periodo, presenta una tendencia creciente a partir de 2010, alcanzando su nivel más elevado en 2014, para descender nuevamente hasta volver a niveles cercanos a los de 2009 en 2021.
+Se observa que la deuda en moneda extranjera a largo plazo presentó un comportamiento ascendente desde el inicio de la serie en 2009, estabilizándose a partir de 2016. El ascenso inicial puede explicarse por la etapa de bajas tasas de interés externas posterior a la crisis financiera de 2008-2009. La deuda externa a corto plazo es menor que la de largo plazo durante todo el periodo, presenta una tendencia creciente a partir de 2010, alcanzando su nivel más elevado en 2014, para descender nuevamente hasta volver a niveles cercanos a los de 2009 en 2021.
 
 La estructura de la deuda del sector público en moneda extranjera no parece generar un riesgo de impago elevado, la deuda externa a corto plazo es una proporción muy pequeña del total de la deuda externa, además, la deuda a largo plazo se ha mantenido estable desde 2016, incluso durante la pandemia de COVID-19 no muestra cambios significativos.
 
-Posteriormente se muestran las series en cambios de los logarítmos
+Posteriormente se muestran las series en cambios de los logarítmos:
 
 ```{r, echo=FALSE}
 #Se transforman los datos a cambios trimestre a trimestre de los logaritmos:
@@ -543,7 +542,7 @@ plot.2 <- autoplot(ts.ds.dexterna[,4:5]) +
        caption = 'Fuente: Elaboración propia con datos de Banxico')
 plot.2
 ```
-Al graficar en diferencias se observa que la deuda en moneda extranjera a largo plazo tiene más variabilidad que la de corto plazo durante todo el periodo. La variación de la deuda externa alargo plazo es especialmente alta al inicio de la serie en 2009, posteriormente la variabilidad disminuye. La deuda externa a corto plazo muestra poca variabilidad. Ello podría sugerir que el Gobierno Mexicano prefiere financiarse a corto plazo en el mercado interno.
+Al graficar en diferencias se observa que la deuda en moneda extranjera a largo plazo tiene más variabilidad que la de corto plazo durante todo el periodo. La variación de la deuda externa a largo plazo es especialmente alta al inicio de la serie en 2009, posteriormente la variabilidad disminuye. La deuda externa a corto plazo muestra poca variabilidad. Ello podría sugerir que el Gobierno Mexicano prefiere financiarse a corto plazo en el mercado interno.
 
 A continuación se presenta un análisis similar para deuda interna, en moneda nacional:
 
@@ -570,7 +569,7 @@ plot.3 <- autoplot(ts.dinterna[,2:3]) +
 plot.3
 ```
 
-Se observan diferencuas muy relevantes entre la deuda interna a corto y a largo plazo, la deuda en moneda nacional a largo plazo muestra ua tendencia creciente relativamente pronunciada durante todo el periodo (junio 2009 - diciembre 2021). La deuda interna presenta una tendencia de reducción hasta mediados de 2011, posteriormente presenta un aumento moderado, después de 2020 la deuda interna también presenta una tendencia claramente creciente. En el caso de la deuda en moneda nacional se observan tendencias crecientes en la de corto y largo plazo, resulta relevante analisar las tasas a las que crece, por ello se presentan las series en diferencias de sus logartimos.
+Se observan diferencias muy relevantes entre la deuda interna a corto y a largo plazos; la deuda en moneda nacional a largo plazo muestra una tendencia creciente relativamente pronunciada durante todo el periodo (junio 2009 - diciembre 2021). Por su parte, la deuda interna presenta una tendencia de reducción hasta mediados de 2011, posteriormente presenta un aumento moderado, después de 2020 la deuda interna también presenta una tendencia claramente creciente. En el caso de la deuda en moneda nacional se observan tendencias crecientes en la de corto y largo plazos, resulta relevante analizar las tasas a las que crece, por ello se presentan las series en diferencias de sus logartimos.
 
 ```{r, echo=FALSE}
 #Se transforman los datos a cambios mes a mes de los logaritmos:
@@ -587,9 +586,9 @@ plot.4 <- autoplot(ts.ds.dinterna[,4:5]) +
 plot.4
 ```
 
-De nuevo se observa una mayor variabilidad en el comportamiento de la deuda a largo plazo, en este caso en moneda nacional, se observan tasas negativas de endeudamiento a largo plazo alrededor de 2011 y tasas positivas y "elevadas" en 2020, lo que sugiere un aumento en el endeudamiento a largo plazo al inicio de la pandemia por COVID-19. La deuda interna acorto plazo presenta menor variabilidad. Es necesario observar el comportamiento en los próximos meses y años de la deuda interna a largo plazo, pues si no se estabilizara representaría un aumento en el riesgo de impago.
+De nuevo se observa una mayor variabilidad en el comportamiento de la deuda a largo plazo, en este caso en moneda nacional, se observan tasas negativas de endeudamiento a largo plazo alrededor de 2011 y tasas positivas y "elevadas" en 2020, lo que sugiere un aumento en el endeudamiento a largo plazo al inicio de la pandemia por COVID-19. La deuda interna a corto plazo presenta menor variabilidad. Es necesario observar el comportamiento en los próximos meses y años de la deuda interna a largo plazo, pues si no se estabiliza representaría un aumento en el riesgo de impago.
 
-Ahora se presenta la evolución de algunos instrumentos de deuda en moneda nacional del Gobierno Mexicano. Se entenderá por tipo de instrumento al tipo de tasa, es decir, tasa de interés fija o variable; también se considero incluir instrumentos como CETES, BONDES, BONOS y UDIBONOS, pero al tratarse de una pregunta acerca del riesgo de impago se considera de mayor relevancia incluir la clasificación por instrumentos de tasas fija y variable.
+Ahora se presenta la evolución de algunos instrumentos de deuda en moneda nacional del Gobierno Mexicano. Se entenderá por tipo de instrumento al tipo de tasa, es decir, tasa de interés fija o variable; también se consideró incluir instrumentos como CETES, BONDES, BONOS y UDIBONOS, pero al tratarse de una pregunta acerca del riesgo de impago se considera de mayor relevancia incluir la clasificación por instrumentos de tasas fija y variable.
 
 ```{r, echo=FALSE}
 #Este código permite la descarga directa de la series del SIE BANXICO
@@ -614,7 +613,7 @@ plot.5 <- autoplot(ts.dinternat[,2:3]) +
 plot.5
 ```
 
-Se observa una tendencia creciente en ambos tipos de deuda, sin embargo la deuda a tasa fija parece crecer de forma más acelerada que la deuda a tasa variable. A inicios de 2021 se observa una aceleración en el crecimiento de la deuda a tasa variable, probablemente por el inicio del ciclo de alsa en tasas. También se presentan las gráficas en tasas de cambio:
+Se observa una tendencia creciente en ambos tipos de deuda, sin embargo, la deuda a tasa fija parece crecer de forma más acelerada que la deuda a tasa variable. A inicios de 2021 se observa una aceleración en el crecimiento de la deuda a tasa variable, probablemente por el inicio del ciclo de alza en tasas. También se presentan las gráficas en tasas de cambio:
 
 ```{r, echo=FALSE}
 #Se transforman los datos a cambios mes a mes de los logaritmos:
@@ -631,7 +630,7 @@ plot.6 <- autoplot(ts.ds.dinternat[,4:5]) +
 plot.6
 ```
 
-Se observa una mayor variabilidad en la deuda interna a tasa variable, la deuda interna a tasa fija varía dentro de un rango más estrecho, pero positivo. A partir de 2021 se observan variaciones positivas y crecientes en la deuda tasa variable. De mantenerse la tendencia, ello podría representar un riesgo de impago, sobretodo al incluir los efectos de un aumento en las tasas de interés externas e internas.
+Se observa una mayor variabilidad en la deuda interna a tasa variable, la deuda interna a tasa fija varía dentro de un rango más estrecho, pero positivo. A partir de 2021 se observan variaciones positivas y crecientes en la deuda de tasa variable. De mantenerse la tendencia, ello podría representar un riesgo de impago, sobretodo al incluir los efectos de un aumento en las tasas de interés externas e internas.
 
 
 
@@ -651,10 +650,10 @@ Se obtuvieron series para Julio 2009 - Marzo 2022 del SIE Banxico de la base Cla
 \end{enumerate}
 
 Las series anteriores se descomponen en:
-Plazo original: Corto y Largo plazo (Deuda cuyo plazo al momento de la colocación inicial era menor o mayor a 365 días respectivamente)
+Plazo original: Corto y Largo plazo (Deuda cuyo plazo al momento de la colocación inicial era menor o mayor a 365 días, respectivamente)
 
 Con lo anterior se propone estudiar la evolución de la deuda del sector privado no financiero y analizar el riesgo de impago.
-En primer lugar observamos la evolución histórica de la deuda total emitida por Instituciones No Financieras SF110356 y SF110357.
+En primer lugar, observamos la evolución histórica de la deuda total emitida por Instituciones No Financieras, SF110356 y SF110357.
 
 La Figura \ref{graf1} muestra las series de la deuda de instituciones no financieras, Privadas en millones de pesos, comparando el largo y corto plazo.
 
@@ -691,7 +690,7 @@ ggplot(B2,aes(x=fecha, y= Dato,color =Plazo ))  +
          # Tamaño del título, doble del establecido por defecto
                             vjust=2, #Justificación vertical, para separarlo del gráfico
                                     face="bold", #Letra negrilla
-                                    color="darkgreen", #Color del texto
+                                    color="black", #Color del texto
                                 lineheight=1.1))+ #Separación entre líneas)) + 
   scale_x_date(
     name = "Años",
@@ -712,9 +711,9 @@ geom_hline(yintercept = 0,colour = "Blue" )
 ```
 
 
-Podemos observar que la deuda de las INFP se compone al 92 % de deuda a Largo plazo que ha ido creciendo, mientras que la deuda a Corto plazo se ha mantenido constante en todo el periodo de estudio.
+Podemos observar que la deuda de las INFP compone al 92 % de deuda a Largo plazo que ha ido creciendo, mientras que la deuda a Corto plazo se ha mantenido constante en todo el periodo de estudio.
 
-La Figura \ref{graf2} muestra las tasas de crecimiento  de la deuda del sector privado no financiero mexicano, en porcentaje  comparando el largo y corto plazo.
+La Figura \ref{graf2} muestra las tasas de crecimiento de la deuda del sector privado no financiero mexicano, en porcentaje  comparando el Largo y Corto plazos.
 
 
 ```{r No Financieras  crecimiento }
@@ -747,7 +746,7 @@ ggplot(B2,aes(x=fecha, y= Dato,color =Plazo ))  +
          # Tamaño del título, doble del establecido por defecto
                             vjust=2, #Justificación vertical, para separarlo del gráfico
                                     face="bold", #Letra negrilla
-                                    color="darkgreen", #Color del texto
+                                    color="black", #Color del texto
                                 lineheight=1.1))+ #Separación entre líneas)) + 
   scale_x_date(
     name = "Años",
@@ -768,7 +767,7 @@ geom_hline(yintercept = 0,colour = "Blue" )
 ```
 
 
-Se observa que Títulos de deuda emitidos por instituciones no financieras, Privadas en el Corto plazo es mas volatil que en el largo plazo.
+Se observa que Títulos de deuda emitidos por instituciones no financieras, Privadas en el Corto plazo es mas volátil que en el largo plazo.
 
 La Figura \ref{graf3} muestra las series de la deuda de instituciones no financieras, Privadas en millones de pesos, comparando en Moneda local y extranjera.
 
@@ -798,7 +797,7 @@ ggplot(B2,aes(x=fecha, y= Dato,color =Moneda ))  +
          # Tamaño del título, doble del establecido por defecto
                             vjust=2, #Justificación vertical, para separarlo del gráfico
                                     face="bold", #Letra negrilla
-                                    color="darkgreen", #Color del texto
+                                    color="black", #Color del texto
                                 lineheight=1.1))+ #Separación entre líneas)) + 
   scale_x_date(
     name = "Años",
@@ -819,9 +818,9 @@ geom_hline(yintercept = 0,colour = "Blue" )
 ```
 
 
-En la grafica \ref{graf3} se muestra como la deuda en moneda local ha tenido un crecmiento constante incluso duarante la pandemia, lo cual no se ve en la deuda emitida en moneda estranjera, tambien se muestra que las emisiones de deuda se realizan en una proporcion mucho mayor en moneda Nacional
+En la grafica \ref{graf3} se muestra cómo la deuda en moneda local ha tenido un crecmiento constante incluso duarante la pandemia, lo cual no se ve en la deuda emitida en moneda estranjera, también se muestra que las emisiones de deuda se realizan en una proporción mucho mayor en moneda nacional.
 
-Las Figuras \ref{graf4}  y \ref{graf5}muestra las tasas de crecimiento  de la deuda del sector privado no financiero mexicano, en porcentaje  comparando el largo y corto plazo.
+Las Figuras \ref{graf4}  y \ref{graf5} muestran las tasas de crecimiento  de la deuda del sector privado no financiero mexicano, en porcentaje  comparando el largo y corto plazos.
 
 ```{r grafica 4 M, fig.cap=' Crecimiento de deuda del del sector privado no financiero Moneda Nacional \\label{graf4}', fig.pos = 'H',fig.height=2.0}
 ggplot(B1,aes(x=Fecha, y= Cre_1))  +
@@ -833,7 +832,7 @@ ggplot(B1,aes(x=Fecha, y= Cre_1))  +
          # Tamaño del título, doble del establecido por defecto
                             vjust=2, #Justificación vertical, para separarlo del gráfico
                                     face="bold", #Letra negrilla
-                                    color="darkgreen", #Color del texto
+                                    color="black", #Color del texto
                                 lineheight=1.1))+ #Separación entre líneas)) + 
   scale_x_date(
     name = "Años",
@@ -863,7 +862,7 @@ ggplot(B1,aes(x=Fecha, y= Cre_2))  +
          # Tamaño del título, doble del establecido por defecto
                             vjust=2, #Justificación vertical, para separarlo del gráfico
                                     face="bold", #Letra negrilla
-                                    color="darkgreen", #Color del texto
+                                    color="black", #Color del texto
                                 lineheight=1.1))+ #Separación entre líneas)) + 
   scale_x_date(
     name = "Años",
@@ -881,9 +880,9 @@ scale_y_continuous(
 # geom_point( col = "chartreuse4")+
 geom_hline(yintercept = 0,colour = "Blue" )
 ```
-Se observa en la figura  \ref{graf4} y \ref{graf5} que Títulos de deuda emitidos por instituciones no financieras, Privadas en moneda extranjera tiene una mayor volatilidad e incluso en algunos periodos no se ha emitido deuda como paso durante la pandemia.
+Se observa en las figuras  \ref{graf4} y \ref{graf5} que Títulos de deuda emitidos por instituciones no financieras, Privadas en moneda extranjera tiene una mayor volatilidad e incluso en algunos periodos no se ha emitido deuda como durante la pandemia.
 
-A conticuacion  en la figura \ref{graf6} observamos la evolución histórica de la deuda total emitida por Instituciones No Financieras (SF110374) y la deuda emitida por Instituciones No Financieras Privadas (SF110355).
+A continuacion,  en la figura \ref{graf6} observamos la evolución histórica de la deuda total emitida por Instituciones No Financieras (SF110374) y la deuda emitida por Instituciones No Financieras Privadas (SF110355).
 
 
 ```{r No Financieras Total}
@@ -912,7 +911,7 @@ ggplot(B2,aes(x=fecha, y= Dato,color =Tipo ))  +
          # Tamaño del título, doble del establecido por defecto
                             vjust=2, #Justificación vertical, para separarlo del gráfico
                                     face="bold", #Letra negrilla
-                                    color="darkgreen", #Color del texto
+                                    color="black", #Color del texto
                                 lineheight=1.1))+ #Separación entre líneas)) + 
   scale_x_date(
     name = "Años",
@@ -948,7 +947,7 @@ ggplot(B1,aes(x=Fecha, y= Relacion))  +
          # Tamaño del título, doble del establecido por defecto
          vjust=2, #Justificación vertical, para separarlo del gráfico
          face="bold", #Letra negrilla
-         color="darkgreen", #Color del texto
+         color="black", #Color del texto
          lineheight=1.1))+ #Separación entre líneas)) + 
   scale_x_date(
     name = "Años",
@@ -968,15 +967,15 @@ scale_y_continuous(
 geom_hline(yintercept = 0,colour = "Blue" )
 B1 <- B1[-c(1:127),]
 ```
-Podemos ver en la Gráfica \ref{graf7} que el ratio sigue un patrón en forma “V” en los últimos 10 años oscilando entre un máximo de $66 \%$ en Enero de 2010 a un mínimo de $50.5 \%$ en Febrero de 2015. A partir de esta fecha la composición de la Emisión de títulos de Deuda de INFP respecto al total ha crecido hasta casi alcanzar nuevamente el máximo en Diciembre de 2021 de $ 69.5 \%).
-La fugura nos  permitió observar que en los últimos 5 años el ratio de la deuda de INFP respecto INFT ha aumentado hasta casi romper el techo de 10 años en Diciembre 2021,  haciendo ligeramente más riesgosa la deuda adquirida por las INFP.
+Podemos ver en la Gráfica \ref{graf7} que el ratio sigue un patrón en forma “V” en los últimos 10 años, oscilando entre un máximo de $66 \%$ en enero de 2010 a un mínimo de $50.5 \%$ en febrero de 2015. A partir de esta fecha la composición de la Emisión de títulos de Deuda de INFP respecto al total ha crecido hasta casi alcanzar nuevamente el máximo en Diciembre de 2021 de $ 69.5 \%).
+La figura nos  permitió observar que en los últimos 5 años el ratio de la deuda de INFP respecto al INFT ha aumentado hasta casi romper el techo de 10 años en Diciembre 2021,  haciendo ligeramente más riesgosa la deuda adquirida por las INFP.
 
 
 
 ### c)
 **Describa la evolucion de las cifras anteriores durante la pandemia de Covid-19, es decir entre principios de 2020 y hasta la fecha.**
 
-En primer lugar se estudia la evolución de la deuda pública en moneda extranjera de corto y largo plazo a partir de 2020:
+En primer lugar se estudia la evolución de la deuda pública en moneda extranjera de corto y largo plazos a partir de 2020:
 
 ```{r, echo=FALSE}
 x <- ts(dexterna[-(1:44),], freq = 4, start = c(2020))
@@ -1004,7 +1003,7 @@ plot.13
 
 
 
-En la figura \ref{graf8} se observa  la relacion de entre la deuda de Empresas privadas y total, para el periodo de la pandemia.
+En la figura \ref{graf8} se observa  la relacion entre la deuda de Empresas privadas y total, para el periodo de la pandemia.
 
 ```{r grafica 9 P, fig.cap=' Deuda Interna del del sector no financiero en la pandemia  \\label{graf9}', fig.pos = 'H',fig.height=3.0}
   fecha<-c(B1$Fecha,B1$Fecha)
@@ -1023,7 +1022,7 @@ ggplot(B2,aes(x=fecha, y= Dato,color =Tipo ))  +
          # Tamaño del título, doble del establecido por defecto
                             vjust=2, #Justificación vertical, para separarlo del gráfico
                                     face="bold", #Letra negrilla
-                                    color="darkgreen", #Color del texto
+                                    color="black", #Color del texto
                                 lineheight=1.1))+ #Separación entre líneas)) + 
   scale_x_date(
     name = "Años",
@@ -1054,7 +1053,7 @@ ggplot(B1,aes(x=Fecha, y= Relacion))  +
          # Tamaño del título, doble del establecido por defecto
                             vjust=2, #Justificación vertical, para separarlo del gráfico
                                     face="bold", #Letra negrilla
-                                    color="darkgreen", #Color del texto
+                                    color="black", #Color del texto
                                 lineheight=1.1))+ #Separación entre líneas)) + 
   scale_x_date(
     name = "Años",
@@ -1076,7 +1075,7 @@ geom_hline(yintercept = 0,colour = "Blue" )
 rm(list = ls())
 ```
 
-En la figura \ref{graf9} se observa que al anunciarse el cierre de actividade por la pandemia de covid 2019, en marzo 2020 se obeserva una disminucion de la emision de deuda de todos los sectores, sin embargo en la figura \ref{graf8} que la relacion de deuda de las empresas privadas a aumentado con respecto a las empresas no financieras.
+En la figura \ref{graf9} se observa que al anunciarse el cierre de actividade por la pandemia de covid 2019, en marzo 2020 se observa una disminucion de la emision de deuda de todos los sectores, sin embargo, en la figura \ref{graf8} se muestra que la relacion de deuda de las empresas privadas ha aumentado con respecto a las empresas no financieras.
 
 
 \newpage
@@ -1084,20 +1083,27 @@ En la figura \ref{graf9} se observa que al anunciarse el cierre de actividade po
 
 Para este ejercicio proponemos los siguientes conceptos:
 
-**Arbitraje:** Compra de un activo en un mercada y la venta simultanea de un activo identico en otro mercado a un mayor precio.
+**Arbitraje:** Compra de un activo en un mercada y la venta simultánea de un activo idéntico en otro mercado a un mayor precio.
 
 **Banks Run:** Una Banks run (o corrida bancaria en español) ocurre cuando un gran número de clientes de un banco u otra institución financiera retiran sus depósitos simultáneamente por preocupaciones sobre la solvencia del banco. A medida que más personas retiran sus fondos, aumenta la probabilidad de insolvencia de las instituciones, lo cual incita a otros agentes a retirar sus depósitos. En casos extremos, las reservas del banco pueden no ser suficientes para hacer frente a los retiros, por lo cual se considera que una corrida es una crisis de liquidez pura para las instituciones bancarias. 
 
-**Colateral:** Activo utilizado como seguro en caso de que un deudor no pueda cubrir los pagos requeridos de algun tipo de préstamo o deuda.
+**Colateral:** Activo utilizado como seguro en caso de que un deudor no pueda cubrir los pagos requeridos de algún tipo de préstamo o deuda.
 
 **Derivados:** Activo financiero que deriva su valor de otros activos, como lo son las opciones para comprar acciones.
 
-**Fondo de inversión:** El fondo de inversión es una forma de invertir dinero junto a otros inversores para beneficiarse de las ventajas inherentes al trabajo en grupo, como la reducción de los riesgos de la inversión en un porcentaje significativo. Estas ventajas incluyen la posibilidad de: contratar a gestores de inversión profesionales; que pueden ofrecer mejores rendimientos y una gestión del riesgo más adecuada; beneficiarse de las economías de escala, es decir, reducir los costes de transacción; aumentar la diversificación de los activos para reducir algunos riesgos no sistemáticos.
+**Fondo de inversión:** El fondo de inversión es una forma de invertir dinero junto a otros inversores para beneficiarse de las ventajas inherentes al trabajo en grupo, como la reducción de los riesgos de la inversión en un porcentaje significativo. Estas ventajas incluyen la posibilidad de contratar a gestores de inversión profesionales que pueden ofrecer mejores rendimientos y una gestión del riesgo más adecuada; beneficiarse de las economías de escala, es decir, reducir los costes de transacción; aumentar la diversificación de los activos para reducir algunos riesgos no sistemáticos, entre otros.
 
-**Riesgo  sistemático:** Es aquel riesgo que perdura incluso después de haber diversificado, también es conocido como riesgo indiversificable.
+**Riesgo  sistemático:** Es aquel riesgo que perdura incluso después de haber sido diversificado, también es conocido como riesgo indiversificable.
 
 **Título o Instrumento Subyacente:** A la variable financiera que es objeto o referencia de un contrato relativo a operaciones derivadas.
 
 **UDIs:** A las unidades de cuenta llamadas “Unidades de Inversión” establecidas en el “Decreto por el que se establecen las obligaciones que podrán denominarse en Unidades de Inversión y reforma y adiciona diversas disposiciones del Código Fiscal de la Federación y de la Ley del Impuesto sobre la Renta” publicado en el Diario Oficial de la Federación el 1 de abril de 1995, tal como el mismo sea modificado o adicionado de tiempo en tiempo.
 
 **Yield gap:** El yield gap o brecha de rendimiento en español, es una forma de comparar el rendimiento de los bonos y las acciones. La brecha o gap se define como el rendimiento medio de las acciones menos el rendimiento medio de los bonos. Dado que las acciones suelen ser inversiones más arriesgadas que los bonos, es de esperar que tengan un mayor rendimiento. En la práctica, la brecha de rendimiento suele ser negativa, ya que los bonos rinden más que las acciones. Esto no se debe a que los inversores consideren las acciones más seguras que los bonos. Más bien se debe a que esperan que la mayor parte del beneficio de la compra de acciones provenga de un aumento de su precio (revalorización del capital) más que del pago de dividendos. Los inversores en bonos suelen esperar que la mayor parte de sus ganancias provengan del pago de cupones. También les preocupa que la inflación erosione el valor real de los cupones futuros, haciendo que valoren más los pagos actuales que los que vencen en los próximos años. Además, la utilidad de la rentabilidad de los dividendos como guía del rendimiento de las acciones ha disminuido desde principios de la década de 1990, ya que cada vez más las empresas han optado por devolver el efectivo a los accionistas mediante la recompra de sus propias acciones en lugar de pagar mayores dividendos.
+
+**Valor fundamental:** Es el valor intrínseco, también considerado como real, o como valor teórico o fundamental de un activo, este valor se obtiene cuando se considera todo lo que influye, tanto tangible como intangiblemente, sobre el valor del activo. 
+
+**Swap:** Es un acuerdo en el que las partes se comprometen a pagar una serie de flujos con cierta regularidad. Estos pagos corresponden a los intereses devengados por el nominal swap. 
+
+**Mercados de futuros:** Consisten en la realización de contratos de compra o venta de ciertas materias, activos, entre otros, en cierta o ciertas fechas futuras, pactando en el tiempo presente el precio al que se llevará a cabo esa transacción en el futuro, así como la cantidad y la fecha de vencimiento. 
+
