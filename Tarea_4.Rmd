@@ -141,40 +141,39 @@ Demuestre que en el modelo analizado en las ecuaciones $(10.15) - (10.23)$ de la
 
 Analizando la media de las distribuciones se tiene:
 
-$$u(c)=-c\mathrm{e}^{2gc}$$  y  $$E[u(c)]=\int_{- \infty}^{\infty} -c \mathrm{e}^{2 g c} \mathrm{~d} c$$
+$$u(c)=-\mathrm{e}^{-2\gamma c}$$  y  $$E[u(c)]=\int_{- \infty}^{\infty} -c \mathrm{e}^{-2 \gamma c} \mathrm{~d} c$$
 
 
 Resolviendo ahora:
 $$
-\int_{- \infty}^{\infty}c \mathrm{e}^{2 g c} \mathrm{~d} c
+\int_{- \infty}^{\infty}-c \mathrm{e}^{-2 \gamma c} \mathrm{~d} c
 $$
-Integrar por partes: $\int \mathrm{fg}^{\prime}=\mathrm{fg}-\int \mathrm{f}^{\prime} g \rightarrow \quad \mathrm{f}=c, \quad \mathrm{~g}^{\prime}=\mathrm{e}^{2 g c}$
+Integra por partes: $\int \mathrm{fg}^{\prime}=\mathrm{fg}-\int \mathrm{f}^{\prime} g \rightarrow \quad \mathrm{f}=c, \quad \mathrm{~g}^{\prime}=\mathrm{e}^{2 \gamma c}$
 
 
 Procedimiento:  
 $$
-\mathrm{f}^{\prime}=1, \quad \mathrm{~g}=\frac{\mathrm{e}^{2 g c}}{2 g} \ \ \ \rightarrow \ \ \ =\frac{c \mathrm{e}^{2 g c}}{2 g}-\int_{- \infty}^{\infty} \frac{\mathrm{e}^{2 g c}}{2 g} \mathrm{~d} c
+\mathrm{f}^{\prime}=1, \quad \mathrm{~g}=-\frac{\mathrm{e}^{2 \gamma c}}{2 \gamma} \ \ \ \rightarrow \ \ \ =-\frac{c \mathrm{e}^{2 \gamma c}}{2 \gamma}-\int_{- \infty}^{\infty} -\frac{\mathrm{e}^{2 \gamma c}}{2 \gamma} \mathrm{~d} c
 $$
 Reemplazando las integrales ya resueltas:
 $$
-\frac{c \mathrm{e}^{2 g c}}{2 g}-\int_{- \infty}^{\infty} \frac{\mathrm{e}^{2 g c}}{2 g} \mathrm{~d} c
-=\frac{c \mathrm{e}^{2 g c}}{2 g}-\frac{\mathrm{e}^{2 g c}}{4 g^{2}}
+-\frac{c \mathrm{e}^{-2 \gamma c}}{2 \gamma}-\int_{- \infty}^{\infty} -\frac{\mathrm{e}^{-2 \gamma c}}{2 \gamma} \mathrm{~d} c
+=\frac{c \mathrm{e}^{-2 \gamma c}}{2 \gamma}+\frac{\mathrm{e}^{-2 \gamma c}}{4 \gamma^{2}}
 $$
 Reemplazando, nuevamente, las integrales ya resueltas:
 $$
--\int_{- \infty}^{\infty} c \mathrm{e}^{2 g c} \mathrm{~d} c = \frac{\mathrm{e}^{2 g c}}{4 g^{2}}-\frac{c \mathrm{e}^{2 g c}}{2 g}
+-\int_{- \infty}^{\infty} c \mathrm{e}^{-2 \gamma c} \mathrm{~d} c = \frac{\mathrm{e}^{-2 \gamma c}}{4 \gamma^{2}}+\frac{c \mathrm{e}^{-2 \gamma c}}{2 \gamma}
 $$
 El problema está resuelto:
-$$ 
-\int_{- \infty}^{\infty}-c \mathrm{e}^{2 g c} \mathrm{~d} c =\frac{\mathrm{e}^{2 g c}}{4 g^{2}}-\frac{c \mathrm{e}^{2 g c}}{2 g}+C
+$$ \int_{- \infty}^{\infty}-c \mathrm{e}^{2 \gamma c} \mathrm{~d} c =\frac{\mathrm{e}^{2 \gamma c}}{4 \gamma^{2}}+\frac{c \mathrm{e}^{2 \gamma c}}{2 \gamma}+C
 $$
 
 Reescribiendo:
 $$
-=-\frac{(2 g c-1) \mathrm{e}^{2 g c}}{4 g^{2}}+C
+=\frac{(2 \gamma c+1) \mathrm{e}^{-2 \gamma c}}{4 \gamma^{2}}+C
 $$
-$$-\dfrac{\left(2gc-1\right)\mathrm{e}^{2g \text c}}{4g^2} \neq \mu$$
-Lo cual indica que la esperanza de dicha distribución es variable y no constante, contrario a lo que se presenta en una distribución normal.
+$$\dfrac{\left(2\gamma c+1\right)\mathrm{e}^{-2\gamma \text c}}{4\gamma^2} \neq \mu$$
+Lo cual indica que la esperanza de dicha distribución es variable y no constante, contrario a lo que se presenta en una distribución normal
 
 #### b)
 Explique en una oración o dos por qué el análisis del texto, que usa las propiedades de las distribuciones log normales, es correcto.
