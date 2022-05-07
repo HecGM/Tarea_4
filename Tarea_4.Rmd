@@ -137,6 +137,7 @@ Si $b$ aumentara estaríamos en la situación contraria a la del inciso ii, ya q
 
 ### Romer 10.5
 #### a) 
+
 Demuestre que en el modelo analizado en las ecuaciones $(10.15) - (10.23)$ de la Sección 10.4, las distribuciones incondicionales de $C^a _{2t}$ y $C^n _{2t}$ no son normales.
 
 Analizando la media de las distribuciones se tiene:
