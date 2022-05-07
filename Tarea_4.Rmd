@@ -57,6 +57,7 @@ Resuelva los ejercicios 10.4 y 10.5  (5a edición). Realice estos con ayuda de s
 Un enfoque más simple para los costos de agencia: compromiso limitado. (Lacker \& Weinberg, 1989; Holmström y Tirole, 1998.) Considere el modelo de la Sección 10.2 con una fricción diferente: no hay costo de verificar la producción, pero el empresario puede acultar la fracción $1-f$ de la producción del proyecto al inversionista (con $0 \leq f \leq 1$ ). Por lo tanto, el emprendedor solo puede prometer de manera cresble pagar la fracción $f$ de la producción del proyecto.
 
 #### a)
+
 Considere un proyecto con el pago esperado $\gamma$ que excede $1+r . \dot{b}$ ¿Cuál es la condición para llevar a cabo el proyecto?
 
 Recordemos que asumimos la producción del proyecto se distribuye uniformemente sobre $[0 ; 2]$, con valor esperado $\gamma$, que tanto el empresario como los inversores son neutrales al riesgo, que existe una tecnología sin riesgo o información asimétrica que produce una tasa de retorno de $r$ con seguridad, y que los inversores externos son competitivos, entonces:
