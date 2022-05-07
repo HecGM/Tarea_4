@@ -1084,9 +1084,17 @@ En la figura \ref{graf9} se observa que al anunciarse el cierre de actividade po
 
 Para este ejercicio proponemos los siguientes conceptos:
 
+**Arbitraje:** Compra de un activo en un mercada y la venta simultanea de un activo identico en otro mercado a un mayor precio.
+
 **Banks Run:** Una Banks run (o corrida bancaria en español) ocurre cuando un gran número de clientes de un banco u otra institución financiera retiran sus depósitos simultáneamente por preocupaciones sobre la solvencia del banco. A medida que más personas retiran sus fondos, aumenta la probabilidad de insolvencia de las instituciones, lo cual incita a otros agentes a retirar sus depósitos. En casos extremos, las reservas del banco pueden no ser suficientes para hacer frente a los retiros, por lo cual se considera que una corrida es una crisis de liquidez pura para las instituciones bancarias. 
 
+**Colateral:** Activo utilizado como seguro en caso de que un deudor no pueda cubrir los pagos requeridos de algun tipo de préstamo o deuda.
+
+**Derivados:** Activo financiero que deriva su valor de otros activos, como lo son las opciones para comprar acciones.
+
 **Fondo de inversión:** El fondo de inversión es una forma de invertir dinero junto a otros inversores para beneficiarse de las ventajas inherentes al trabajo en grupo, como la reducción de los riesgos de la inversión en un porcentaje significativo. Estas ventajas incluyen la posibilidad de: contratar a gestores de inversión profesionales; que pueden ofrecer mejores rendimientos y una gestión del riesgo más adecuada; beneficiarse de las economías de escala, es decir, reducir los costes de transacción; aumentar la diversificación de los activos para reducir algunos riesgos no sistemáticos.
+
+**Riesgo  sistemático:** Es aquel riesgo que perdura incluso después de haber diversificado, también es conocido como riesgo indiversificable.
 
 **Título o Instrumento Subyacente:** A la variable financiera que es objeto o referencia de un contrato relativo a operaciones derivadas.
 
