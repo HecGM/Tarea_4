@@ -495,7 +495,9 @@ Lo interesante de este análisis es decir, por tanto, lo siguiente: el crédito 
 ### a)
 **Utilice datos del SIE/Valores en Circulación y de SIE/Finanzas públicas del Banco de México para describir la evolución a lo largo del tiempo de la composición de la deuda del gobierno mexicano por tipo de instrumento, madurez y moneda. Señale la implicación de lo que encuentre para el riesgo de impago.**
 
-En primer lugar se clasifica la deuda pública en interna y externa. La deuda externa está, en general, denominada en moneda extranjera mientras que la deuda interna está denominada en su mayoría en moneda local. La deuda interna y externa pueden clasificarse como de corto (menor a un año) y de largo plazo (mayor a un año). Del SIE Banxico/Balanza de Pagos puede obtenerse información acerca de la deuda externa y su madurez.
+Se prodecio a clasificar la deduda gubernamental en  dos grupos principales: Deuda Externa ( denominada generalmente en moneda extranjera) y DEuda Interna( demonominada en moneda nacional).
+
+De igual forma, se clasificó en dos sub categorías en función del plazo de vencimiento: Largo Plazo y Corto plazo.
 
 ```{r echo=FALSE}
 #Este código permite la descarga directa de la series del SIE BANXICO
@@ -523,11 +525,12 @@ plot.1 <- autoplot(ts.dexterna[,2:3]) +
 plot.1
 ```
 
-Se observa que la deuda en moneda extranjera a largo plazo presentó un comportamiento ascendente desde el inicio de la serie en 2009, estabilizándose a partir de 2016. El ascenso inicial puede explicarse por la etapa de bajas tasas de interés externas posterior a la crisis financiera de 2008-2009. La deuda externa a corto plazo es menor que la de largo plazo durante todo el periodo, presenta una tendencia creciente a partir de 2010, alcanzando su nivel más elevado en 2014, para descender nuevamente hasta volver a niveles cercanos a los de 2009 en 2021.
+En las graficas anteriores se puede observar que la deuda externa de largo plazo  presenta una tendencia al alza para el periodo comprendido entre 2009 y 2019, logrando una estabilidad para 2020.
 
-La estructura de la deuda del sector público en moneda extranjera no parece generar un riesgo de impago elevado, la deuda externa a corto plazo es una proporción muy pequeña del total de la deuda externa, además, la deuda a largo plazo se ha mantenido estable desde 2016, incluso durante la pandemia de COVID-19 no muestra cambios significativos.
+Por su parte la deuda externa de corto plazo presenta un comportamiento de U invertida, mostrando una tendencia ascendente de 2009 a 2014, para posteriormente empezar una tendencia a la baja acelerada hasta 2016, para después seguir con la misma tendencia pero a un ritmo más estables, incluso durante el tiempo de la pendemia de Covid. De igual forma es fácil observar en los ejes de unidades monetarias  que la deuda de corto plazo es mucho menor a la de largo plazo, lo cual es un signo de un bajo nivel de riesgo de impago.
 
-Posteriormente se muestran las series en cambios de los logarítmos:
+A continuación se muestran las misma series pero aplicando logaritmos, para analizar su tasa de crecimiento: 
+
 
 ```{r, echo=FALSE}
 #Se transforman los datos a cambios trimestre a trimestre de los logaritmos:
@@ -543,9 +546,14 @@ plot.2 <- autoplot(ts.ds.dexterna[,4:5]) +
        caption = 'Fuente: Elaboración propia con datos de Banxico')
 plot.2
 ```
-Al graficar en diferencias se observa que la deuda en moneda extranjera a largo plazo tiene más variabilidad que la de corto plazo durante todo el periodo. La variación de la deuda externa a largo plazo es especialmente alta al inicio de la serie en 2009, posteriormente la variabilidad disminuye. La deuda externa a corto plazo muestra poca variabilidad. Ello podría sugerir que el Gobierno Mexicano prefiere financiarse a corto plazo en el mercado interno.
 
-A continuación se presenta un análisis similar para deuda interna, en moneda nacional:
+Al analizar las series logaritmicas  se observa mayor variabilidad en la deuda externa de largo plazo, con respecto a los niveles de variabilidad que que muestra de deuda externa de corto plazo durante  el periodo de referencia.
+
+Cabe destacar que la mayor variabilidad se presenta durante los años posteriores a las gran recesión, 2010-2011.
+
+La poca variabilidad de la deuda de corto plazo podría explicar la preferencia del gobierno por el financiamiento de largo plazo o la frecuente reestructuración de la misma, situación analizada y comentada en las clases del curso.
+
+A continuación se presenta el  análisis para la deuda interna, en moneda nacional:
 
 ```{r, echo=FALSE}
 #Este código permite la descarga directa de la series del SIE BANXICO
@@ -570,7 +578,7 @@ plot.3 <- autoplot(ts.dinterna[,2:3]) +
 plot.3
 ```
 
-Se observan diferencias muy relevantes entre la deuda interna a corto y a largo plazos; la deuda en moneda nacional a largo plazo muestra una tendencia creciente relativamente pronunciada durante todo el periodo (junio 2009 - diciembre 2021). Por su parte, la deuda interna presenta una tendencia de reducción hasta mediados de 2011, posteriormente presenta un aumento moderado, después de 2020 la deuda interna también presenta una tendencia claramente creciente. En el caso de la deuda en moneda nacional se observan tendencias crecientes en la de corto y largo plazos, resulta relevante analizar las tasas a las que crece, por ello se presentan las series en diferencias de sus logartimos.
+A partir de las gráficas se pueden exponer diferencias y similitudes entre la deuda interna a corto y a largo plazos. En primer lugar, ambas series muestran una tendencia creciente para el perdiodo de referencia, no obstante la deuda interna de corto plazo muestra más variaciones que la de largo plazo, misma que se hacen evidentes al analizar los logaritmos de las series.
 
 ```{r, echo=FALSE}
 #Se transforman los datos a cambios mes a mes de los logaritmos:
@@ -587,9 +595,11 @@ plot.4 <- autoplot(ts.ds.dinterna[,4:5]) +
 plot.4
 ```
 
-De nuevo se observa una mayor variabilidad en el comportamiento de la deuda a largo plazo, en este caso en moneda nacional, se observan tasas negativas de endeudamiento a largo plazo alrededor de 2011 y tasas positivas y "elevadas" en 2020, lo que sugiere un aumento en el endeudamiento a largo plazo al inicio de la pandemia por COVID-19. La deuda interna a corto plazo presenta menor variabilidad. Es necesario observar el comportamiento en los próximos meses y años de la deuda interna a largo plazo, pues si no se estabiliza representaría un aumento en el riesgo de impago.
+Se puede observar una mayor variabilidad en el comportamiento de la deuda a largo plazo, presentando en su mayor parte tasas negativas de endeudamiento que parecen seguir un comportamiento cíclico. 
 
-Ahora se presenta la evolución de algunos instrumentos de deuda en moneda nacional del Gobierno Mexicano. Se entenderá por tipo de instrumento al tipo de tasa, es decir, tasa de interés fija o variable; también se consideró incluir instrumentos como CETES, BONDES, BONOS y UDIBONOS, pero al tratarse de una pregunta acerca del riesgo de impago se considera de mayor relevancia incluir la clasificación por instrumentos de tasas fija y variable.
+Por su parte la deuda interna a corto plazo presenta menor variabilidad negativa, no obstante los ciclos de subida y bajada son más frecuentes.
+
+A continuación de muestra la evolución de algunos instrumentos de deuda denominados moneda nacional del Gobierno Federal. La clasificación de instrumentos se hizo en función del coportamiento de tasa fija o variable, considerando de igual forma los instrumentos libre de riesgo como los son CETES, BONDES, BONOS y UDIBONOS, pero al tratarse de una pregunta acerca del riesgo de impago se considera de mayor relevancia incluir la clasificación por instrumentos de tasas fija y variable.
 
 ```{r, echo=FALSE}
 #Este código permite la descarga directa de la series del SIE BANXICO
